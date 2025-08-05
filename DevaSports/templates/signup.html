@@ -1,0 +1,429 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevaSports - Sign Up</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Same CSS from login page */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background: #f9fafb;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .logo-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            gap: 10px;
+        }
+
+        .logo-row img {
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .logo-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #222;
+        }
+
+        .login-card {
+            background: #fff;
+            padding: 25px;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-card h2 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+            color: #222;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .otp-group {
+            display: flex;
+            gap: 10px;
+        }
+
+
+        .otp-group input {
+            flex: 1;
+        }
+
+        .otp-group button {
+            padding: 10px 15px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 10px;
+            background: #000;
+            color: white;
+            font-size: 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 10px 0;
+            position: relative;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            height: 1px;
+            background: #ccc;
+            position: absolute;
+            top: 50%;
+            width: 40%;
+        }
+
+        .divider::before {
+            left: 0;
+        }
+
+        .divider::after {
+            right: 0;
+        }
+
+        .divider span {
+            padding: 0 10px;
+            background: #fff;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .social-btn i {
+            margin-right: 10px;
+        }
+
+        .signup {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .signup a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .modal-content h3 {
+            margin-bottom: 10px;
+            font-size: 22px;
+            color: #2e7d32;
+        }
+
+        .modal-content p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .modal-content button {
+            background-color: #2e7d32;
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .modal-content button:hover {
+            background-color: #256128;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+
+        @media (max-width: 500px) {
+            .login-card {
+                padding: 20px;
+            }
+
+            .logo-row img {
+                margin-top: 10px;
+                height: 50px;
+                width: 50px;
+                object-fit: cover;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="logo-row">
+        <img src="{% static 'images/deva-logo.jpg' %}" alt="Tourism Hike Logo">
+        <div class="logo-name">Deva-Sports</div>
+    </div>
+
+    <div class="login-card">
+        <h2>Create Your Account</h2>
+
+        <form id="signup-form" method="POST" action="{% url 'signup' %}">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="signup">
+
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" name="name" id="name" placeholder="John Doe">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" placeholder="Enter your email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="••••••••">
+            </div>
+
+            <div class="form-group">
+                <label for="otp">OTP</label>
+                <div class="otp-group">
+                    <input type="text" name="otp" id="otp" placeholder="OTP" />
+                    <button type="button" onclick="sendOtp()">Send OTP</button>
+                </div>
+                <p id="otp-message" style="margin-top:5px; font-size:0.9rem;"></p>
+            </div>
+
+            <button type="submit" class="login-btn">Sign Up</button>
+        </form>
+
+
+
+        <div class="divider"><span>or</span></div>
+
+        <div class="social-btn"><i class="fab fa-google"></i> Sign up with Google</div>
+        <div class="social-btn"><i class="fab fa-facebook-f"></i> Sign up with Facebook</div>
+
+        <div class="signup">
+            Already have an account? <a href="{% url 'login' %}">Login</a>
+        </div>
+
+        <!-- Notification Modal -->
+        <div id="success-modal" class="modal-overlay" style="display: none;">
+            <div class="modal-content">
+                <h3>🎉 Signup Successful!</h3>
+                <p>Your account has been created successfully.</p>
+                <button id="okay-btn">Okay</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function sendOtp() {
+            const email = document.getElementById('email').value.trim();
+            const otpMessage = document.getElementById('otp-message');
+
+            if (!email) {
+                otpMessage.textContent = "Please enter your email.";
+                otpMessage.style.color = "red";
+                return;
+            }
+
+            fetch("{% url 'signup' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-CSRFToken": getCookie("csrftoken")
+                },
+                body: new URLSearchParams({
+                    action: "send_otp",
+                    email: email
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    otpMessage.textContent = data.message;
+                    otpMessage.style.color = data.status === "success" ? "green" : "red";
+                })
+                .catch(() => {
+                    otpMessage.textContent = "Something went wrong!";
+                    otpMessage.style.color = "red";
+                });
+        }
+
+        document.getElementById("signup-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const otp = document.getElementById("otp").value.trim();
+            const otpMessage = document.getElementById("otp-message");
+
+            if (!name || !email || !password || !otp) {
+                otpMessage.textContent = "All fields are required.";
+                otpMessage.style.color = "red";
+                return;
+            }
+
+            fetch("{% url 'signup' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-CSRFToken": getCookie("csrftoken")
+                },
+                body: new URLSearchParams({
+                    action: "signup",
+                    name: name,
+                    email: email,
+                    password: password,
+                    otp: otp
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        // ✅ Show modal instead of redirecting immediately
+                        document.getElementById("otp-message").style.color = "green";
+                        document.getElementById("otp-message").textContent = data.message;
+
+                        // Show modal (if you added one)
+                        const modal = document.getElementById("success-modal");
+                        if (modal) {
+                            modal.style.display = "flex";
+                            document.getElementById("okay-btn").onclick = () => {
+                                window.location.href = data.redirect_url;
+                            };
+                        } else {
+                            // fallback to redirect after delay
+                            setTimeout(() => {
+                                window.location.href = data.redirect_url;
+                            }, 1500);
+                        }
+                    } else {
+                        otpMessage.textContent = data.message;
+                        otpMessage.style.color = "red";
+                    }
+                })
+                .catch(() => {
+                    otpMessage.textContent = "Something went wrong.";
+                    otpMessage.style.color = "red";
+                });
+        });
+
+    </script>
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,406 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Minimal Navigation</title>
+
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <link rel="stylesheet" href="{% static 'D:\Bhagyesh\python\django-projects\DevaSports\static\css\header.css' %}">
+  
+
+
+
+</head>
+
+<body>
+
+    <div class="header-container">
+        <!-- Logo -->
+        <div class="logo-brand">
+            <a href="#" class="logo">
+                <img src="{% static 'images/deva-logo.jpg' %}" alt="Logo" />
+
+            </a>
+            <h5 class="brand-name">Deva-Sports</h5>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="navbar">
+            <ul class="navbar-list">
+                <li><a href="{%url 'home' %}" class="navbar-link">Home</a></li>
+                <li><a href="#" class="navbar-link">About</a></li>
+
+                <li class="category-wrapper">
+                    <a href="#" class="navbar-link" id="categoryToggle" aria-haspopup="true" aria-expanded="false">
+                        Category
+                        <ion-icon name="chevron-down-outline" id="cat-icon"></ion-icon>
+                    </a>
+
+                    <ul id="categoryDropdown" class="category-dropdown" style="display: none;">
+                        {% for category in categories %}
+                        <li>
+                            <a href="{% url 'category_products' category.name|slugify %}">
+                                {{ category.name }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+
+
+
+
+
+
+
+                <!-- <li><a href="#" class="navbar-link">Shop</a></li> -->
+                <li><a href="#" class="navbar-link">Blog</a></li>
+                <li><a href="#" class="navbar-link">Contact</a></li>
+                {% if request.user.is_superuser %}
+                <li><a href="{% url 'add_prodcut' %}" class="navbar-link">Add Product</a></li>
+                {% endif %}
+
+
+            </ul>
+        </nav>
+
+        <div class="search-lang-container" role="search">
+            <div class="language-selector desktop-lang">
+                <select id="languageSelect" aria-label="Select Language">
+                    <option value="en">English</option>
+                    <option value="hi">हिंदी</option>
+                    <option value="mr">मराठी</option>
+                </select>
+            </div>
+
+            <!-- Hidden Google Translate Element -->
+            <div id="google_translate_element" style="display: none;"></div>
+
+
+
+
+
+
+            <!-- Search box -->
+            <div class="search-container">
+                <input type="search" id="searchInput" class="search-input" placeholder="Search..."
+                    aria-label="Search" />
+                <ion-icon name="search-outline" class="search-icon"></ion-icon>
+            </div>
+        </div>
+
+        <!-- Action buttons -->
+
+        <ul class="nav-action-list">
+            <li>
+                <a href="#" class="nav-action-btn" id="wishlistBtn" aria-label="Wishlist">
+                    <ion-icon name="heart-outline"></ion-icon>
+                    <span class="count-badge wishlist-badge">0</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'add_to_card' %}" class="nav-action-btn" id="cartBtn" aria-label="Cart">
+                    <ion-icon name="cart-outline"></ion-icon>
+                    <span class="count-badge cart-badge" style="bottom:1px">0</span>
+                </a>
+            </li>
+
+            <li class="nav-user-dropdown">
+                <button class="nav-action-btn" aria-label="User" id="userDropdownBtn" aria-haspopup="true"
+                    aria-expanded="false">
+                    <ion-icon name="person-outline"></ion-icon>
+                    
+                </button>
+                <ul class="user-dropdown-menu" role="menu" aria-labelledby="userDropdownBtn" hidden>
+                    <li><a href="#">Profile</a></li>
+                    <li><a href="#">Settings</a></li>
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                    <li><a href="{% url 'login' %}">LogIn / Register</a></li>
+                    {% endif %}
+                </ul>
+            </li>
+
+
+            <li>
+                <button class="hamburger" id="hamburgerBtn" aria-label="Open Menu">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </button>
+            </li>
+
+        </ul>
+    </div>
+
+
+
+
+    <!-- Side Panel -->
+    <div class="side-panel" id="sidePanel" aria-hidden="true" role="dialog" aria-label="Mobile menu">
+        <button id="sidePanelClose" aria-label="Close Menu" style="
+          background: none;border: none;
+          font-size: 2rem;
+          cursor: pointer;
+          position: absolute;
+          top: 15px;
+          right: 15px;
+          color: #0b0c10;
+        ">
+            <ion-icon name="close-outline"></ion-icon>
+        </button>
+
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li>
+                <a href="#" id="mobileCategoryToggle">
+                    Category
+                    <ion-icon name="chevron-down-outline" id="mobileCatIcon"></ion-icon>
+                </a>
+
+                <ul id="mobileCategoryDropdown">
+                    {% for category in categories %}
+                    <li>
+                        <a href="{% url 'category_products' category.name|slugify %}">
+                            {{ category.name }}
+                        </a>
+                    </li>
+                    {% endfor %}
+
+
+                </ul>
+            </li>
+            <li><a href="#">Shop</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Contact</a></li>
+            <!-- Mobile Language Selector -->
+            <li class="mobile-lang">
+                <div class="language-selector">
+                    <label for="mobileLanguageSelect" style="
+                font-size: 17px;
+                font-weight: 500;
+                margin-bottom: 4px;
+                margin-left: 8px;
+              ">Language</label>
+                    <select id="mobileLanguageSelect" aria-label="Select Language">
+                        <option value="en">English</option>
+                        <option value="hi">हिंदी</option>
+                        <option value="mr">मराठी</option>
+                    </select>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+
+
+
+
+
+
+</body>
+
+ <!-- <script src="{% static 'js/header.js' %}"></script> -->
+ <script>
+    // ========== HAMBURGER MENU (Mobile Side Panel) ==========
+const hamburgerBtn = document.getElementById("hamburgerBtn");
+const sidePanel = document.getElementById("sidePanel");
+const sidePanelCloseBtn = document.getElementById("sidePanelClose");
+
+hamburgerBtn.addEventListener("click", () => {
+    sidePanel.classList.toggle("active");
+    sidePanel.setAttribute("aria-hidden", !sidePanel.classList.contains("active"));
+});
+
+sidePanelCloseBtn.addEventListener("click", () => {
+    sidePanel.classList.remove("active");
+    sidePanel.setAttribute("aria-hidden", "true");
+});
+
+// ========== CATEGORY DROPDOWN (Desktop) ==========
+const catToggle = document.getElementById("categoryToggle");
+const catDropdown = document.getElementById("categoryDropdown");
+const catIcon = document.getElementById("cat-icon");
+
+catToggle.addEventListener("click", (e) => {
+    e.preventDefault();
+    const isVisible = catDropdown.style.display === "block";
+    catDropdown.style.display = isVisible ? "none" : "block";
+    catIcon.name = isVisible ? "chevron-down-outline" : "chevron-up-outline";
+    catToggle.setAttribute("aria-expanded", !isVisible);
+});
+
+// ========== CLOSE CATEGORY DROPDOWN IF CLICKED OUTSIDE ==========
+document.addEventListener("click", (e) => {
+    if (!catToggle.contains(e.target) && !catDropdown.contains(e.target)) {
+        catDropdown.style.display = "none";
+        catIcon.name = "chevron-down-outline";
+        catToggle.setAttribute("aria-expanded", false);
+    }
+});
+
+// ========== AUTO CLOSE SIDE PANEL ON DESKTOP WIDTH ==========
+window.addEventListener("resize", () => {
+    if (window.innerWidth > 940 && sidePanel.classList.contains("active")) {
+        sidePanel.classList.remove("active");
+        sidePanel.setAttribute("aria-hidden", "true");
+    }
+});
+
+
+// ========== CATEGORY DROPDOWN (Side Panel) ==========
+const sideCatToggle = document.getElementById("mobileCategoryToggle");
+const sideDropdown = document.getElementById("mobileCategoryDropdown");
+const sideCatIcon = document.getElementById("mobileCatIcon");
+
+if (sideCatToggle && sideDropdown && sideCatIcon) {
+    sideCatToggle.addEventListener("click", (e) => {
+        e.preventDefault();
+        const isVisible = sideDropdown.style.display === "block";
+        sideDropdown.style.display = isVisible ? "none" : "block";
+        sideCatIcon.name = isVisible ? "chevron-down-outline" : "chevron-up-outline";
+    });
+}
+
+
+
+// ========== SEARCH INPUT (Basic Functionality) ==========
+const searchInput = document.getElementById("searchInput");
+searchInput.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+        e.preventDefault();
+        const query = searchInput.value.trim();
+        if (query.length > 0) {
+            console.log("Searching for:", query);
+            alert("Searching for: " + query);
+        }
+    }
+});
+
+// ========== USER DROPDOWN TOGGLE ==========
+const userBtn = document.getElementById("userDropdownBtn");
+const userMenu = userBtn?.nextElementSibling;
+
+if (userBtn && userMenu) {
+    userBtn.addEventListener("click", (e) => {
+        e.stopPropagation(); // Prevents closing immediately
+        const expanded = userBtn.getAttribute("aria-expanded") === "true";
+        userBtn.setAttribute("aria-expanded", String(!expanded));
+        userMenu.toggleAttribute("hidden");
+    });
+
+    document.addEventListener("click", (e) => {
+        if (!userBtn.contains(e.target) && !userMenu.contains(e.target)) {
+            userMenu.setAttribute("hidden", "");
+            userBtn.setAttribute("aria-expanded", "false");
+        }
+    });
+}
+
+
+// ========== CLOSE USER DROPDOWN IF CLICKED OUTSIDE ==========
+// document.addEventListener("click", (e) => {
+//     if (!userBtn.contains(e.target) && !userMenu.contains(e.target)) {
+//         userMenu.setAttribute("hidden", "");
+//         userBtn.setAttribute("aria-expanded", false);
+//     }
+// });
+
+// ========== GOOGLE TRANSLATE LANGUAGE SELECTOR ==========
+function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,hi,mr',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    }, 'google_translate_element');
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const languageSelect = document.getElementById('languageSelect');
+
+    languageSelect.addEventListener('change', function () {
+        const selectedLang = languageSelect.value;
+
+        const waitForGoogleDropdown = setInterval(() => {
+            const googleDropdown = document.querySelector('.goog-te-combo');
+            if (googleDropdown && googleDropdown.options.length > 1) {
+                googleDropdown.value = selectedLang;
+                googleDropdown.dispatchEvent(new Event('change'));
+                clearInterval(waitForGoogleDropdown);
+            }
+        }, 500);
+    });
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    updateCartBadge(); // Initial load
+
+    // ✅ Function to update cart count badge
+    function updateCartBadge() {
+        fetch('/cart-count/')
+            .then(response => response.json())
+            .then(data => {
+                const badge = document.querySelector('.cart-badge');
+                if (badge) {
+                    badge.textContent = data.count;
+                    badge.style.display = data.count > 0 ? 'inline-block' : 'none';
+                }
+            })
+            .catch(error => console.error('Cart count fetch error:', error));
+    }
+
+    // 🔄 Reusable function for adding product to cart via fetch (AJAX)
+    document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const variantId = this.getAttribute('data-variant-id');
+            const quantity = this.getAttribute('data-quantity') || 1;
+
+            fetch('/save-to-cart/', {
+                method: 'POST',
+                body: JSON.stringify({
+                    id: variantId,
+                    quantity: quantity
+                }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+                updateCartBadge();  // ✅ Update badge after cart add
+            })
+            .catch(err => {
+                console.error('Add to cart error:', err);
+            });
+        });
+    });
+
+    // 🔐 Helper function to get CSRF token
+    function getCSRFToken() {
+        const name = 'csrftoken';
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            let cookie = cookies[i].trim();
+            if (cookie.startsWith(name + '=')) {
+                return decodeURIComponent(cookie.substring(name.length + 1));
+            }
+        }
+        return '';
+    }
+
+    // ⬆ Expose badge update globally (optional)
+    window.updateCartBadge = updateCartBadge;
+});
+
+
+ </script>
+
+</html>

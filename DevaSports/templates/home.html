@@ -1,0 +1,431 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{% static 'css\home.css' %}">
+
+</head>
+
+<body>
+    <!-- Header  -->
+    <div id="header-placeholder">
+        {% include "header.html" %}
+    </div>
+
+    <!-- Custom Image Slider -->
+    <!-- ✅ Slider HTML -->
+    <!-- ✅ Custom Image Coauser -->
+    <div class="coauser" id="coauser">
+        <div class="slides" id="slides">
+            <!-- Slide 1 -->
+            <div class="slide">
+                <img src="{% static 'images/Aadidas banner.png' %}" alt="Slide 1" />
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="slide">
+                <img src="{% static 'images\Banner2.webp' %}" alt="Slide 2" />
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="slide">
+                <img src="{% static 'D:\Bhagyesh\python\django-projects\DevaSports\static\images\Banner3webp.webp' %}"
+                    alt="Slide 3" />
+            </div>
+        </div>
+
+        <!-- Navigation buttons -->
+        <button class="nav-btn prev" onclick="prevSlide()">❮</button>
+        <button class="nav-btn next" onclick="nextSlide()">❯</button>
+
+        <!-- Indicators -->
+        <div class="indicators" id="indicators">
+            <div class="dot active" onclick="showSlide(0)"></div>
+            <div class="dot" onclick="showSlide(1)"></div>
+            <div class="dot" onclick="showSlide(2)"></div>
+        </div>
+    </div>
+
+    <!-- Servieces -->
+    <section class="services-section">
+        <div class="services-container">
+
+            <div class="service-box">
+                <div class="icon">
+                    <img src="{% static 'images/service-1.png' %}" alt="Free Shipping" />
+                </div>
+                <div class="text">
+                    <h4>Free Shipping</h4>
+                    <p>All India orders are <span>$Free</span></p>
+                </div>
+            </div>
+
+            <div class="service-box">
+                <div class="icon">
+                    <img src="{% static 'images/service-2.png' %}" alt="Quick Payment" />
+                </div>
+                <div class="text">
+                    <h4>Quick Payment</h4>
+                    <p>100% secure payment</p>
+                </div>
+            </div>
+
+            <!-- <div class="service-box">
+                <div class="icon">
+                    <img src="{% static 'images/service-3.png' %}" alt="Free Returns" />
+                </div>
+                <div class="text">
+                    <h4>Free Returns</h4>
+                    <p>Money back in 30 days</p>
+                </div>
+            </div> -->
+
+            <div class="service-box">
+                <div class="icon">
+                    <img src="{% static 'images/service-4.png' %}" alt="12/7 Support" />
+                </div>
+                <div class="text">
+                    <h4>12/7 Support</h4>
+                    <p>Get Quick Support</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+
+
+
+    <!-- Slider -->
+    <h2 style="  text-align: center;margin-bottom: 25px; color: var(--rich-black-fogra-29);"> Shop By Category</h2>
+    <div class="slider-container">
+        {% for category in categories %}
+        <a href="{% url 'category_products' category.name|slugify %}" class="slider-item">
+            {% if category.image %}
+            <img src="{{ category.image.url }}" alt="{{ category.name }}">
+            {% else %}
+            <img src="{% static 'images/default-category.png' %}" alt="Default Image">
+            {% endif %}
+            <span>{{ category.name }}</span>
+        </a>
+        {% endfor %}
+    </div>
+
+    <!-- Cards Section -->
+    <section class="section product">
+
+
+        <div class="container">
+            <h2 class="section-title">Bestsellers Products</h2>
+
+            <ul class="filter-list">
+                <li><button class="filter-btn active" data-brand="all">All</button></li>
+                {% for brand in brands %}
+                <li><button class="filter-btn" data-brand="{{ brand.name|lower }}">{{ brand.name }}</button></li>
+                {% endfor %}
+            </ul>
+
+
+
+            <ul class="product-list">
+                {% for item in product_cards %}
+                <li class="product-item" data-brand="{{ item.product.brand.name|lower }}">
+
+                    <div class="product-card">
+                        <figure class="card-banner">
+                            <a href="{% url 'product_details' item.variant.id %}">
+                                {% if item.variant.images and item.variant.images.image1 %}
+                                <img src="{{ item.variant.images.image1.url }}" class="image-contain"
+                                    alt="{{ item.product.name }}">
+                                {% else %}
+                                <img src="/static/images/default.png" class="image-contain" alt="Default Image">
+                                {% endif %}
+                            </a>
+                            {% if item.product.is_arrival %}
+                            <div class="card-badge">New Arrival</div>
+                            {% endif %}
+
+
+
+                            <div class="card-action-list">
+
+                                <!-- ✅ Add to Cart Button (Fixed) -->
+                                <div class="card-action-item">
+                                    <button class="card-action-btn add-to-cart" data-id="{{ item.variant.id }}"
+                                        data-title="{{ item.product.name }}" data-quantity="1">
+                                        <ion-icon name="cart-outline"></ion-icon>
+                                    </button>
+                                    <div class="card-action-tooltip">Add to Cart</div>
+                                </div>
+
+                                <!-- ✅ Wishlist Button (Already Correct) -->
+                                <div class="card-action-item">
+                                    <button class="card-action-btn add-to-wishlist" data-id="{{ item.variant.id }}"
+                                        data-title="{{ item.product.name }}"
+                                        data-image="{% if item.variant.images and item.variant.images.image1 %}{{ item.variant.images.image1.url }}{% else %}/static/images/default.png{% endif %}"
+                                        data-price="{{ first_size.price }}" data-size="{{ first_size.size }}">
+                                        <ion-icon name="heart-outline"></ion-icon>
+                                    </button>
+                                    <div class="card-action-tooltip">Wishlist</div>
+                                </div>
+
+
+                                <div class="card-action-item">
+                                    <button class="card-action-btn quick-view-btn"
+                                        data-img="{% if item.variant.images and item.variant.images.image1 %}{{ item.variant.images.image1.url }}{% else %}/static/images/default.png{% endif %}">
+                                        <ion-icon name="eye-outline"></ion-icon>
+                                    </button>
+                                    <div class="card-action-tooltip">Quick View</div>
+                                </div>
+                            </div>
+                        </figure>
+
+                        <div class="card-content">
+                            <div class="card-cat">
+                                <medium>{{ item.product.category.name }}</medium> /
+                                <medium>{{ item.product.brand.name }}</medium> /
+                                <medium>{{ item.variant.color }}</medium> 
+                                {# ✅ Hide first size from display, but keep it usable for backend #}
+                                {% with item.variant.sizes.all|first as first_size %}
+                                <input type="hidden" value="{{ first_size.size }}" class="first-size-hidden" />
+                                {% endwith %}
+                                <br>
+                                <div class="card-sizes">
+                                    <b><span >Sizes:</span></b>
+                                    
+                                    {% for s in item.variant.sizes.all %}
+                                    <span class="size-pill">{{ s.size }},</span>
+                                    {% endfor %}
+                                </div>
+
+                            </div>
+                            <h3 class="card-title">
+                                <a href="{% url 'product_details' item.variant.id %}">
+                                    {{ item.product.name }}
+                                </a>
+                            </h3>
+                            {% with item.variant.sizes.all|first as first_size %}
+                            <div class="card-price">₹{{ first_size.price }}</div>
+                            <!-- <div class="product-size">Size: {{ first_size.size }}</div> -->
+                            {% endwith %}
+
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+
+        </div>
+    </section>
+
+
+
+    <!-- Quick View Modal -->
+    <div id="quickViewModal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <img id="modalImage" src="" alt="Product Preview">
+        </div>
+    </div>
+
+    <footer>
+        <div id="footer-placeholder">
+            {% include "footer.html" %}
+        </div>
+    </footer>
+
+</body>
+<script>
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const productItems = document.querySelectorAll('.product-item');
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove 'active' class from all buttons
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            // Add 'active' class to the clicked button
+            button.classList.add('active');
+
+            const selectedBrand = button.dataset.brand;
+
+            productItems.forEach(item => {
+                const itemBrand = item.dataset.brand;
+                if (selectedBrand === "all" || itemBrand === selectedBrand) {
+                    item.style.display = "block";
+                } else {
+                    item.style.display = "none";
+                }
+            });
+        });
+    });
+</script>
+
+
+
+<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        /* ---------- Flickity Carousel ---------- */
+        if (typeof Flickity !== 'undefined') {
+            const flkty = new Flickity('.js-flickity', {
+                wrapAround: true,
+                cellAlign: 'center',
+                contain: true,
+                autoPlay: false,
+                pageDots: true
+            });
+
+            document.querySelectorAll('.carousel-cell').forEach((cell, index) => {
+                cell.addEventListener('click', function () {
+                    flkty.select(index);
+                });
+            });
+        }
+
+        /* ---------- Custom Manual Slider ---------- */
+        const slides = document.getElementById("slides");
+        const dots = document.querySelectorAll(".dot");
+        const totalSlides = slides?.children.length || 0;
+        let currentIndex = 0;
+        let slideTimer;
+
+        function showSlide(index) {
+            if (!slides) return;
+            currentIndex = (index + totalSlides) % totalSlides;
+            slides.style.transform = `translateX(-${currentIndex * 100}%)`;
+            updateDots();
+            resetTimer();
+        }
+
+        function updateDots() {
+            dots.forEach(dot => dot.classList.remove("active"));
+            dots[currentIndex]?.classList.add("active");
+        }
+
+        function resetTimer() {
+            clearTimeout(slideTimer);
+            slideTimer = setTimeout(() => {
+                showSlide(currentIndex + 1);
+            }, 5000);
+        }
+
+        if (slides) resetTimer();
+
+        /* ---------- Product Quick View Modal ---------- */
+        const quickViewBtns = document.querySelectorAll('.quick-view-btn');
+        const modal = document.getElementById('quickViewModal');
+        const modalImage = document.getElementById('modalImage');
+        const closeBtn = document.querySelector('.close-btn');
+
+        quickViewBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const imgSrc = btn.getAttribute('data-img');
+                modalImage.src = imgSrc;
+                modal.style.display = 'flex';
+            });
+        });
+
+        closeBtn?.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        /* ---------- Add to Cart: Save in DB only ---------- */
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', () => {
+                const product = getProductData(button);
+
+                fetch('/save-cart-details/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCSRFToken()
+                    },
+                    body: JSON.stringify({
+                        id: product.id,
+                        quantity: product.quantity
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message || "Product added to cart.");
+                    })
+                    .catch(error => {
+                        console.error("Error saving to DB:", error);
+                        alert("Failed to add product to cart.");
+                    });
+            });
+        });
+
+        /* ---------- Wishlist (still uses localStorage) ---------- */
+        document.querySelectorAll('.add-to-wishlist').forEach(button => {
+            button.addEventListener('click', () => {
+                const product = getProductData(button);
+                saveToStorage('wishlistItems', product);
+                updateWishlistBadge();
+            });
+        });
+
+        updateWishlistBadge();
+
+        function getProductData(btn) {
+            return {
+                id: btn.dataset.id,
+                title: btn.dataset.title,
+                image: btn.dataset.image,
+                price: parseFloat(btn.dataset.price),
+                size: btn.dataset.size,
+                quantity: 1
+            };
+        }
+
+        function saveToStorage(key, product) {
+            let items = JSON.parse(localStorage.getItem(key)) || [];
+            if (!items.some(item => item.id === product.id)) {
+                items.push(product);
+                localStorage.setItem(key, JSON.stringify(items));
+                alert(`${product.title} added to wishlist.`);
+            } else {
+                alert(`${product.title} is already in wishlist.`);
+            }
+        }
+
+        function updateWishlistBadge() {
+            const count = (JSON.parse(localStorage.getItem('wishlistItems')) || []).length;
+            const badge = document.querySelector('.wishlist-badge');
+            if (badge) badge.textContent = count;
+        }
+
+        function getCSRFToken() {
+            let cookieValue = null;
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                const trimmed = cookie.trim();
+                if (trimmed.startsWith('csrftoken=')) {
+                    cookieValue = trimmed.substring('csrftoken='.length);
+                    break;
+                }
+            }
+            return cookieValue;
+        }
+    });
+</script>
+
+
+</script>
+
+
+
+
+</html>

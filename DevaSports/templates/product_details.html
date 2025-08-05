@@ -1,0 +1,1109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Sport Essentials Logo T-Shirt</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet'
+        href="{% static 'D:\Bhagyesh\python\django-projects\DevaSports\static\css\prodcut_details.css' %}">
+    <script src='main.js'></script>
+    <style>
+        /* =======================================================
+   🛍️ PRODUCT CARD + SIMILAR SLIDER STYLES (MERGED)
+========================================================== */
+
+        /* 🧱 Product Card */
+        .product-card {
+            border-radius: 0px;
+            border: 1px solid #ddd;
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-card img {
+            padding: 5px;
+        }
+
+        /* 🖼️ Image Container */
+        .card-banner {
+            position: relative;
+            background: #f5f5f5;
+            width: 100%;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* 📷 Image */
+        .image-contain {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover .image-contain {
+            transform: scale(1.1);
+        }
+
+        /* 🔘 Similar Card Action Buttons */
+        .similar-card-action-list {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .product-card:hover .similar-card-action-list {
+            opacity: 1;
+        }
+
+        .similar-card-action-item {
+            position: relative;
+        }
+
+        .similar-card-action-btn {
+            background: #fff;
+            border-radius: 50%;
+            padding: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .similar-card-action-btn:is(:hover, :focus) {
+            background: var(--bittersweet, #e63946);
+            color: var(--white, #fff);
+        }
+
+        .similar-card-action-btn ion-icon {
+            --ionicon-stroke-width: 30px;
+        }
+
+        /* 💬 Tooltip */
+        .similar-card-action-tooltip {
+            position: absolute;
+            top: 40px;
+            right: 0;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            opacity: 0;
+            white-space: nowrap;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 10;
+        }
+
+        .similar-card-action-item:hover .similar-card-action-tooltip,
+        .similar-card-action-btn:focus+.similar-card-action-tooltip {
+            opacity: 1;
+        }
+
+        /* 🆕 Badge */
+        .card-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: red;
+            color: #fff;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+        }
+
+        /* 🔤 Card Content */
+        .card-content {
+            text-align: center;
+            padding: 8px 5px;
+        }
+
+        .card-cat {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .card-cat a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .card-title a {
+            font-size: 15px;
+            color: #222;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .card-title a:is(:hover, :focus) {
+            color: #e63946;
+        }
+
+        .card-price {
+            color: #e63946;
+            font-weight: 600;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        /* 🧩 Section Heading */
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            margin-top: 50px;
+            text-align: left;
+            /* margin-bottom: 25px; */
+            /* font-size: 22px; */
+        }
+
+        /* ===============================
+   📦 SIMILAR PRODUCT SLIDER
+================================= */
+        .similar-section {
+            margin: 40px 0;
+        }
+
+        .slider-container {
+            position: relative;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 10px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+
+            /* Hide scrollbar in all browsers */
+            scrollbar-width: none;
+        }
+
+        .slider-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .product-slider {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .product-item {
+            flex: 0 0 auto;
+            width: 220px;
+        }
+
+        /* 🚫 Optional: Slider arrows (hidden or removed) */
+        .slider-btn {
+            display: none;
+            /* Or remove if not needed */
+        }
+
+        /* 📱 Responsive */
+        @media (max-width: 767px) {
+            .product-item {
+                width: 160px;
+            }
+        }
+    </style>
+</head>
+
+<style>
+
+</style>
+
+<body>
+    <!-- Header  -->
+    <div id="header-placeholder">
+        {% include "header.html" %}
+    </div>
+
+    <div class="container">
+        {% if images %}
+        <div class="images">
+
+            {% if images.image1 %}
+            <div class="image-wrapper">
+                <img src="{{ images.image1.url }}" alt="Product View 1">
+                <div class="card-action-item">
+                    <button class="card-action-btn quick-view-btn" data-index="0">
+                        <ion-icon name="eye-outline"></ion-icon>
+                    </button>
+                    <div class="card-action-tooltip">Quick View</div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if images.image2 %}
+            <div class="image-wrapper">
+                <img src="{{ images.image2.url }}" alt="Product View 2">
+                <div class="card-action-item">
+                    <button class="card-action-btn quick-view-btn" data-index="1">
+                        <ion-icon name="eye-outline"></ion-icon>
+                    </button>
+                    <div class="card-action-tooltip">Quick View</div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if images.image3 %}
+            <div class="image-wrapper">
+                <img src="{{ images.image3.url }}" alt="Product View 3">
+                <div class="card-action-item">
+                    <button class="card-action-btn quick-view-btn" data-index="2">
+                        <ion-icon name="eye-outline"></ion-icon>
+                    </button>
+                    <div class="card-action-tooltip">Quick View</div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if images.image4 %}
+            <div class="image-wrapper">
+                <img src="{{ images.image4.url }}" alt="Product View 4">
+                <div class="card-action-item">
+                    <button class="card-action-btn quick-view-btn" data-index="3">
+                        <ion-icon name="eye-outline"></ion-icon>
+                    </button>
+                    <div class="card-action-tooltip">Quick View</div>
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+        {% endif %}
+
+
+        <!-- Quick View Modal with Slider -->
+        <div id="quickViewModal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <div class="slider">
+                    <button class="prev-btn">&#10094;</button>
+                    <img id="modalImage" src="" alt="Product Preview">
+                    <button class="next-btn">&#10095;</button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Hidden CSRF form for JavaScript fetch -->
+        <form method="post" style="display: none;">
+            {% csrf_token %}
+        </form>
+
+
+        <div class="details">
+
+            <!-- ✅ Product title with selected color -->
+            <h1 class="product-title">{{ product.name }} - {{ variant.color.name }}</h1>
+
+            <!-- ⭐ Ratings -->
+            <div class="rating-section">
+                <div class="stars">
+                    <div class="star"></div>
+                    <div class="star"></div>
+                    <div class="star"></div>
+                    <div class="star"></div>
+                    <div class="star empty"></div>
+                </div>
+                <button type="button" class="review-link">Submit a Review</button>
+
+            </div>
+
+
+            <!-- ✅ Default price placeholder (will update on size click) -->
+            <div class="price" id="price-display">
+                ₹{{ sizes.0.price }}
+            </div>
+
+            <a href="#" class="">Notify Me If Price Drops</a>
+
+            <!-- ✅ Color Section -->
+            <div class="color-section">
+                <div class="color-header">
+                    <span class="color-label"><strong>Color:</strong> {{ variant.color.name }}</span>
+                </div>
+
+                <div class="color-options">
+                    {% if images and images.image1 %}
+                    <img src="{{ images.image1.url }}" alt="{{ variant.color.name }}" class="color-option selected">
+                    {% else %}
+                    <img src="/static/images/default.png" alt="Default" class="color-option selected">
+                    {% endif %}
+
+                    {% for other_variant in other_variants %}
+                    <a href="{% url 'product_details' other_variant.id %}">
+                        {% if other_variant.images and other_variant.images.image1 %}
+                        <img src="{{ other_variant.images.image1.url }}" alt="{{ other_variant.color.name }}"
+                            class="color-option">
+                        {% else %}
+                        <img src="/static/images/default.png" alt="{{ other_variant.color.name }}" class="color-option">
+                        {% endif %}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- ✅ SIZE OPTIONS for selected variant -->
+            <div class="size-section">
+                <div class="size-header">
+                    <span class="size-label">
+                        <strong>Select Size:</strong> <span id="selected-size-label">None</span>
+                        <p id="stock-info" class="stock-display"
+                            style="margin-top: 10px; font-weight: 500; color: #333;">
+                            Stock: <strong>Not selected</strong>
+                        </p>
+
+                    </span>
+                    <a href="#" class="size-chart">Size Chart</a>
+
+                </div>
+
+                <div class="sizes">
+                    {% for size_entry in sizes %}
+                    <button class="size-btn {% if size_entry.stock == 0 %}disabled{% endif %}"
+                        data-size="{{ size_entry.size.size_label }}" data-price="{{ size_entry.price }}"
+                        data-stock="{{ size_entry.stock }}">
+                        {{ size_entry.size.size_label }}
+                    </button>
+                    {% endfor %}
+                </div>
+
+                <!-- 🧾 Stock display -->
+                <div id="stock-info" style="margin-top: 10px; font-weight: bold;"></div>
+            </div>
+
+
+
+            <!-- ✅ QUANTITY + WISHLIST SIDE-BY-SIDE -->
+            <div class="quantity-section">
+                <div class="quantity-label"><strong>QUANTITY:</strong> <span id="qty-val">1</span></div>
+
+                <!-- ✅ Add a wrapper to take full width -->
+                <div class="quantity-heart-row">
+                    <!-- Quantity Section -->
+                    <div class="quantity-wrapper">
+                        <div class="quantity-btn" id="decrease">−</div>
+                        <div class="quantity-display" id="qty">1</div>
+                        <div class="quantity-btn" id="increase">+</div>
+                    </div>
+
+                    <!-- Wishlist Heart Button -->
+                    <button class="wishlist-heart-btn">
+                        <div class="heart-icon"></div>
+                    </button>
+                </div>
+
+
+
+
+                <!-- ✅ ACTION BUTTONS -->
+                <div class="action-buttons">
+                    <a href="#" id="buy-now-link">
+                        <button type="button" class="buy-now">Buy Now</button>
+                    </a>
+
+                    <button class="cart-btn">
+                        <div class="cart-icon"></div>
+                        Add to Cart
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="accordion">
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">Description</div>
+            <div class="accordion-content">
+                {{ product.description|linebreaks }}
+            </div>
+
+        </div>
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">Product Details</div>
+            <div class="accordion-content">100% Cotton. Machine wash cold. Imported. Classic fit with reinforced
+                seams for durability.</div>
+        </div>
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">Size & Fit</div>
+            <div class="accordion-content">Standard fit for everyday wear. Check our size guide for details.
+                Model is 6'0" and wearing size M.</div>
+        </div>
+    </div>
+    </div>
+
+
+
+
+
+    <!-- Review Form -->
+    <div class="customer-reviews" id="customerReviews">
+
+        <h2>Customer Reviews</h2>
+
+        <div class="review-header">
+            <!-- Top stars (summary) - not interactive -->
+            <div class="star-rating" id="summaryStars">
+                <span class="star">☆</span>
+                <span class="star">☆</span>
+                <span class="star">☆</span>
+                <span class="star">☆</span>
+                <span class="star">☆</span>
+            </div>
+
+            <!-- Toggle button -->
+            <button class="write-review-btn" id="toggleReviewBtn">Write a review</button>
+        </div>
+
+        <div class="review-summary">Be the first to write a review</div>
+
+        <!-- Interactive Review Form -->
+        <div class="review-form" id="reviewForm">
+            <h3>Write a review</h3>
+
+            <label>Rating</label>
+            <div class="star-rating" id="reviewStars">
+                <span class="star">☆</span>
+                <span class="star">☆</span>
+                <span class="star">☆</span>
+                <span class="star">☆</span>
+                <span class="star">☆</span>
+            </div>
+
+            <label for="name">Name (displayed publicly like John Smith)</label>
+            <input type="text" id="name" placeholder="Enter your name (public)" required>
+
+            <label for="title">Review Title</label>
+            <input type="text" id="title" placeholder="Give your review a title" required>
+
+            <label for="comments">Review</label>
+            <textarea id="comments" rows="5" placeholder="Write your comments here" required></textarea>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Enter your email (private)">
+
+            <small>
+                How we use your data: We’ll only contact you about the review you left, and only if necessary.
+                By submitting your review, you agree to Judge.me’s terms, privacy and content policies.
+            </small>
+
+            <div style="margin-top: 20px; display: flex; gap: 10px; ">
+                <button class="cancel-btn">Cancel review</button>
+                <button class="submit-review-btn">Submit Review</button>
+            </div>
+        </div>
+    </div>
+
+    <section class="similar-section">
+        <h2 class="section-title">Similar Products</h2>
+        <div class="slider-container">
+            <ul class="product-slider">
+                {% for item in similar_variants %}
+                <li class="product-item">
+                    <div class="product-card">
+                        <figure class="card-banner">
+                            <a href="{% url 'product_details' item.id %}">
+                                {% if item.images and item.images.image1 %}
+                                <img src="{{ item.images.image1.url }}" class="image-contain"
+                                    alt="{{ item.product.name }}">
+                                {% else %}
+                                <img src="/static/images/default.png" class="image-contain" alt="Default Image">
+                                {% endif %}
+                            </a>
+                            {% if item.product.is_arrival %}
+                            <div class="card-badge">New Arrival</div>
+                            {% endif %}
+
+                            <div class="similar-card-action-list">
+                                <div class="similar-card-action-item">
+                                    <button class="similar-card-action-btn add-to-cart" data-id="{{ item.id }}"
+                                        data-quantity="1">
+                                        <ion-icon name="cart-outline"></ion-icon>
+                                    </button>
+                                    <div class="similar-card-action-tooltip">Add to Cart</div>
+                                </div>
+                                <div class="similar-card-action-item">
+                                    <button class="card-action-btn add-to-wishlist" data-id="{{ item.variant.id }}"
+                                        data-title="{{ item.product.name }}"
+                                        data-image="{% if item.variant.images and item.variant.images.image1 %}{{ item.variant.images.image1.url }}{% else %}/static/images/default.png{% endif %}"
+                                        data-price="{{ first_size.price }}" data-size="{{ first_size.size }}">
+                                        <ion-icon name="heart-outline"></ion-icon>
+                                    </button>
+                                    <div class="similar-card-action-tooltip">Wishlist</div>
+                                </div>
+                                <div class="similar-card-action-item">
+                                    <button class="similar-card-action-btn similar-quick-view-btn"
+                                        data-img="{% if item.images and item.images.image1 %}{{ item.images.image1.url }}{% else %}/static/images/default.png{% endif %}">
+                                        <ion-icon name="eye-outline"></ion-icon>
+                                    </button>
+                                    <div class="similar-card-action-tooltip">Quick View</div>
+                                </div>
+                            </div>
+                        </figure>
+
+                        <div class="card-content">
+                            <div class="card-cat">
+                                <medium>{{ item.product.category.name }}</medium> /
+                                <medium>{{ item.product.brand.name }}</medium> /
+                                <medium>{{ item.color }}</medium>
+                                {# ✅ Hide first size from display, but keep it usable for backend #}
+                                {% with item.variant.sizes.all|first as first_size %}
+                                <input type="hidden" value="{{ first_size.size }}" class="first-size-hidden" />
+                                {% endwith %}
+                                <br>
+                                <div class="card-sizes">
+                                    <b><span>Sizes:</span></b>
+
+                                    {% for s in item.sizes.all %}
+                                    <span class="size-pill">{{ s.size }},</span>
+                                    {% endfor %}
+
+                                </div>
+                            </div>
+                            <h3 class="card-title">
+                                <a href="{% url 'product_details' item.id %}">{{ item.product.name }}</a>
+                            </h3>
+                            {% with item.sizes.all|first as first_size %}
+                            <div class="card-price">₹{{ first_size.price }}</div>
+                            {% endwith %}
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+
+
+
+
+
+
+    <!-- Footer -->
+    <footer>
+        <div id="footer-placeholder">
+            {% include "footer.html" %}
+        </div>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cartBtn = document.querySelector('.cart-btn');
+
+            cartBtn.addEventListener('click', () => {
+                const selectedSizeBtn = document.querySelector('.size-btn.selected');
+                const selectedSize = selectedSizeBtn ? selectedSizeBtn.dataset.size : null;
+                const quantity = parseInt(document.getElementById('qty').textContent);
+
+                if (!selectedSize) {
+                    alert('Please select a size before adding to cart.');
+                    return;
+                }
+
+                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                fetch("", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: new URLSearchParams({
+                        action: "cart-btn",
+                        selected_size: selectedSize,
+                        quantity: quantity
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert(data.message || 'Product added to cart!');
+                        } else {
+                            alert(data.error || 'Failed to add product.');
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Error adding to cart:', err);
+                        alert('Something went wrong!');
+                    });
+            });
+        });
+    </script>
+
+    <script>
+        const SHOW_STOCK = "{{ show_stock|yesno:'true,false' }}" === "true";
+    </script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // =========================
+            // ✅ Quantity Logic
+            // =========================
+            let qty = 1;
+            let maxQty = 10; // Will be updated based on selected size stock
+            const qtyDisplay = document.getElementById("qty");
+            const qtyVal = document.getElementById("qty-val");
+
+            function updateQty() {
+                qtyDisplay.innerText = qty;
+                qtyVal.innerText = qty;
+            }
+
+            document.getElementById("decrease").onclick = () => {
+                if (qty > 1) {
+                    qty--;
+                    updateQty();
+                }
+            };
+
+            document.getElementById("increase").onclick = () => {
+                if (qty < maxQty) {
+                    qty++;
+                    updateQty();
+                }
+            };
+
+
+
+
+
+            // =========================
+            // ✅ Size Selection Logic
+            // =========================
+            const sizeButtons = document.querySelectorAll('.size-btn');
+            const stockInfo = document.getElementById('stock-info');
+            const priceDisplay = document.getElementById('price-display');
+            const selectedSizeLabel = document.getElementById('selected-size-label');
+
+            function handleSizeSelection(btn) {
+                // Remove previous selection
+                sizeButtons.forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+
+                const size = btn.dataset.size;
+                const price = btn.dataset.price;
+                const stock = parseInt(btn.dataset.stock);
+
+                // Update UI
+                selectedSizeLabel.textContent = size;
+                priceDisplay.textContent = `₹${price}`;
+
+                // Show stock info based on user type
+                if (stock <= 2) {
+                    stockInfo.innerHTML = `Stock: <strong>${stock}</strong> - <span style="color:red;">Hurry, only ${stock} left!</span>`;
+                } else {
+                    if (SHOW_STOCK) {
+                        stockInfo.innerHTML = `Stock: <strong>${stock}</strong> available`;
+                    } else {
+                        stockInfo.innerHTML = `<span style="color:green; font-weight: bold;">In Stock</span>`;
+                    }
+                }
+
+                // Set max quantity
+                maxQty = stock;
+                if (qty > stock) {
+                    qty = stock;
+                    updateQty();
+                }
+            }
+
+            // Add event listener to each size button
+            sizeButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    handleSizeSelection(btn);
+                });
+            });
+
+            // ✅ Auto-select first size on page load (if exists)
+            const firstAvailableSize = [...sizeButtons].find(btn => !btn.classList.contains('disabled'));
+            if (firstAvailableSize) {
+                handleSizeSelection(firstAvailableSize);
+            }
+
+            // =========================
+            // ✅ Color Selection Logic
+            // =========================
+            const colorOptions = document.querySelectorAll('.color-option');
+
+            colorOptions.forEach(img => {
+                img.addEventListener('click', function () {
+                    colorOptions.forEach(option => option.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+
+            // =========================
+            // ✅ Accordion Toggle Logic
+            // =========================
+            window.toggleAccordion = function (header) {
+                const content = header.nextElementSibling;
+                const isActive = header.classList.contains('active');
+
+                document.querySelectorAll('.accordion-header').forEach(h => {
+                    h.classList.remove('active');
+                    h.nextElementSibling.classList.remove('active');
+                });
+
+                if (!isActive) {
+                    header.classList.add('active');
+                    content.classList.add('active');
+                }
+            };
+
+            // =========================
+            // ✅ Quick View Modal Logic
+            // =========================
+            const quickViewBtns = document.querySelectorAll('.quick-view-btn');
+            const modal = document.getElementById('quickViewModal');
+            const modalImage = document.getElementById('modalImage');
+            const closeBtn = document.querySelector('.close-btn');
+            const nextBtn = document.querySelector('.next-btn');
+            const prevBtn = document.querySelector('.prev-btn');
+
+            const images = [
+                "{{ images.image1.url }}",
+                "{{ images.image2.url }}",
+                "{{ images.image3.url }}",
+                "{{ images.image4.url }}"
+            ].filter(url => url); // Remove empty URLs
+
+            let currentIndex = 0;
+
+            function showImage(index) {
+                modalImage.src = images[index];
+            }
+
+            quickViewBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    currentIndex = parseInt(btn.getAttribute('data-index'));
+                    showImage(currentIndex);
+                    modal.style.display = 'flex';
+                });
+            });
+
+            nextBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex + 1) % images.length;
+                showImage(currentIndex);
+            });
+
+            prevBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex - 1 + images.length) % images.length;
+                showImage(currentIndex);
+            });
+
+            closeBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+
+            window.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+
+
+
+
+
+
+    </script>
+    <!-- For buy prodcut scritps -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const buyNowAnchor = document.getElementById("buy-now-link");
+            const buyNowBtn = document.querySelector(".buy-now");
+
+            buyNowBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+
+                const variantId = "{{ variant.id }}";
+                const selectedSizeBtn = document.querySelector(".size-btn.selected");
+                const quantity = document.getElementById("qty").textContent.trim();
+
+                if (!selectedSizeBtn) {
+                    alert("Please select a size.");
+                    return;
+                }
+
+                const selectedSize = selectedSizeBtn.dataset.size;
+                const selectedPrice = selectedSizeBtn.dataset.price;
+
+                // Build new href URL
+                const newUrl = `/buy_process?variant_id=${variantId}&size=${selectedSize}&price=${selectedPrice}&quantity=${quantity}`;
+
+                // Update href and redirect manually
+                buyNowAnchor.href = newUrl;
+                window.location.href = newUrl;
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const reviewLink = document.querySelector(".review-link");
+            const reviewSection = document.getElementById("customerReviews");
+            const reviewForm = document.getElementById("reviewForm");
+            const toggleBtn = document.getElementById("toggleReviewBtn");
+            const cancelBtns = document.querySelectorAll(".cancel-btn");
+            const reviewStars = document.querySelectorAll("#reviewStars .star");
+            const submitBtn = document.querySelector(".submit-review-btn");
+            let selectedRating = 0;
+
+            // ✅ Scroll and show form when clicking 'Submit a Review' link
+            reviewLink?.addEventListener("click", function () {
+                if (reviewSection) {
+                    reviewSection.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+
+                if (reviewForm && !reviewForm.classList.contains("show")) {
+                    reviewForm.classList.add("show");
+                    if (toggleBtn) toggleBtn.textContent = "Cancel review";
+                }
+            });
+
+            // ✅ Toggle form visibility
+            toggleBtn?.addEventListener("click", () => {
+                reviewForm.classList.toggle("show");
+                toggleBtn.textContent = reviewForm.classList.contains("show") ? "Cancel review" : "Write a review";
+            });
+
+            cancelBtns.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    reviewForm.classList.remove("show");
+                    toggleBtn.textContent = "Write a review";
+                });
+            });
+
+            // ✅ Interactive star rating logic
+            function updateStars(index) {
+                reviewStars.forEach((s, i) => {
+                    s.classList.toggle("filled", i <= index);
+                    s.textContent = i <= index ? "★" : "☆";
+                });
+            }
+
+            updateStars(-1); // All stars blank by default
+
+            reviewStars.forEach((star, index) => {
+                star.addEventListener("click", () => {
+                    selectedRating = index + 1;
+                    updateStars(index);
+                });
+
+                star.addEventListener("mouseover", () => {
+                    updateStars(index);
+                });
+
+                star.addEventListener("mouseout", () => {
+                    updateStars(selectedRating - 1);
+                });
+            });
+
+            // ✅ Submit Review via AJAX
+            submitBtn?.addEventListener("click", () => {
+                const name = document.getElementById("name").value.trim();
+                const email = document.getElementById("email").value.trim();
+                const title = document.getElementById("title").value.trim();
+                const comment = document.getElementById("comments").value.trim();
+
+                if (!name || !title || !comment || selectedRating === 0) {
+                    alert("Please fill all required fields and select a rating.");
+                    return;
+                }
+
+                const data = {
+                    variant_id: "{{ variant.id }}",  // make sure variant is passed to template
+                    name: name,
+                    email: email,
+                    title: title,
+                    comment: comment,
+                    rating: selectedRating
+                };
+
+                fetch("/submit-review/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": getCSRFToken()
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(res => res.json())
+                    .then(response => {
+                        alert(response.message);
+                        if (response.success) {
+                            // Reset form
+                            document.getElementById("name").value = "";
+                            document.getElementById("email").value = "";
+                            document.getElementById("title").value = "";
+                            document.getElementById("comments").value = "";
+                            selectedRating = 0;
+                            updateStars(-1);
+                            reviewForm.classList.remove("show");
+                            toggleBtn.textContent = "Write a review";
+                            // Optional: Append review to the list if reviews are shown
+                        }
+                    })
+                    .catch(err => {
+                        console.error("Error submitting review", err);
+                        alert("Failed to submit review. Try again.");
+                    });
+            });
+
+            // ✅ CSRF Helper
+            function getCSRFToken() {
+                const name = "csrftoken";
+                const cookies = document.cookie.split(";");
+                for (let cookie of cookies) {
+                    if (cookie.trim().startsWith(name + "=")) {
+                        return decodeURIComponent(cookie.trim().substring(name.length + 1));
+                    }
+                }
+                return "";
+            }
+        });
+    </script>
+
+
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const slider = document.querySelector(".product-slider");
+            const nextBtn = document.querySelector(".slider-btn.next");
+            const prevBtn = document.querySelector(".slider-btn.prev");
+
+            const scrollAmount = 240;  // Amount to scroll on each click
+
+            if (nextBtn && prevBtn && slider) {
+                nextBtn.addEventListener("click", () => {
+                    slider.scrollLeft += scrollAmount;
+                });
+
+                prevBtn.addEventListener("click", () => {
+                    slider.scrollLeft -= scrollAmount;
+                });
+            }
+        });
+    </script>
+
+    <!-- Smiliar prodcut card, queick view and wishlist buttons -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const similarSection = document.querySelector('.similar-section');
+            if (!similarSection) return; // Only run on product details page
+
+            // ✅ Quick View Modal for Similar Products (Single Image Only)
+            const quickViewBtns = similarSection.querySelectorAll('.similar-quick-view-btn');
+            const modal = document.getElementById('quickViewModal');
+            const modalImage = document.getElementById('modalImage');
+            const closeBtn = document.querySelector('.close-btn');
+
+            quickViewBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const imgSrc = btn.getAttribute('data-img');
+                    modalImage.src = imgSrc;
+                    modal.style.display = 'flex';
+
+                    // 🔒 Hide next/prev buttons if they exist (we're not using them here)
+                    const nextBtn = modal.querySelector('.next-btn');
+                    const prevBtn = modal.querySelector('.prev-btn');
+                    if (nextBtn) nextBtn.style.display = 'none';
+                    if (prevBtn) prevBtn.style.display = 'none';
+                });
+            });
+
+            closeBtn?.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+
+            window.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+
+
+            // ✅ Add to Cart for Similar Products
+            similarSection.querySelectorAll('.similar-card-action-btn.add-to-cart').forEach(button => {
+                button.addEventListener('click', () => {
+                    const product = getProductData(button);
+                    fetch('/save-cart-details/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCSRFToken()
+                        },
+                        body: JSON.stringify({
+                            id: product.id,
+                            quantity: product.quantity
+                        })
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            alert(data.message || "Product added to cart.");
+                        })
+                        .catch(err => {
+                            console.error("Error saving to DB:", err);
+                            alert("Failed to add product to cart.");
+                        });
+                });
+            });
+
+            // ✅ Add to Wishlist for Similar Products
+            similarSection.querySelectorAll('.add-to-wishlist').forEach(button => {
+                button.addEventListener('click', () => {
+                    const id = button.dataset.id;
+                    alert(`Wishlist click: ID = ${id}`);
+                    // Send to backend if needed
+                });
+            });
+
+            // ✅ Helpers
+            function getCSRFToken() {
+                const cookie = document.cookie.split('; ').find(row => row.startsWith('csrftoken='));
+                return cookie ? decodeURIComponent(cookie.split('=')[1]) : '';
+            }
+
+            function getProductData(button) {
+                return {
+                    id: button.dataset.id,
+                    quantity: parseInt(button.dataset.quantity || 1)
+                };
+            }
+        });
+    </script>
+
+</body>
+
+</html>

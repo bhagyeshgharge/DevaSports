@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevaSports Checkout</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* =============================== */
+    /*           GLOBAL RESET         */
+    /* =============================== */
+    /* * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      background: #fff;
+      color: #1a202c;
+    } */
+
+    .container {
+      max-width: auto;
+      margin: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        margin: 0px;
+        border-radius: 15px;
+      }
+    }
+
+    /* =============================== */
+    /*         PROGRESS INDICATOR      */
+    /* =============================== */
+    .progress-container {
+      max-width: 800px;
+      margin: 40px auto 0;
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      box-shadow: 2px 20px 40px rgba(5, 5, 5, 0.1);
+      padding: 20px;
+      background: #f8fafc;
+      border-radius: 12px
+    }
+
+    .progress-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      margin-bottom: 10px;
+      gap: 15px;
+    }
+
+    .progress-line {
+      position: absolute;
+      top: 20px;
+      left: 5%;
+      right: 5%;
+      height: 3px;
+      background: #e2e8f0;
+      z-index: 1;
+    }
+
+    .progress-line-active {
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(90deg, #10b981, #10b981);
+      transition: width 0.5s ease;
+      border-radius: 3px;
+      z-index: 2;
+    }
+
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 3;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .step-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: white;
+      border: 3px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      margin-bottom: 12px;
+      transition: all 0.3s ease
+    }
+
+    .step-label {
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      color: #64748b;
+      transition: color 0.3s ease;
+    }
+
+    /* Active Step: green border, white background */
+    .step-item.active .step-circle {
+      background: white;
+      border-color: #10b981;
+      color: #10b981;
+      transform: scale(1.1);
+      box-shadow: 0 4px 15px rgba(136, 196, 0, 0.3);
+    }
+
+    .step-item.active .step-label {
+      color: #10b981;
+    }
+
+    .step-item.completed .step-circle {
+      background: #88c400;
+      border-color: #88c400;
+      color: white;
+    }
+
+    .step-item.completed .step-label {
+      color: #88c400;
+    }
+
+    @media (max-width: 768px) {
+      .progress-container {
+        padding: 20px;
+      }
+
+      .step-label {
+        font-size: 12px;
+      }
+    }
+
+    /* =============================== */
+    /*         FORM CONTAINER         */
+    /* =============================== */
+    .form-container {
+      margin: 20px;
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      box-shadow: 2px 20px 40px rgba(0.2, 0.5, 0.5, 0);
+      background-color: white;
+      padding: 40px;
+      border: 1.5px solid #1e293b;
+    }
+
+    @media (max-width: 768px) {
+      .form-container {
+        padding: 10px;
+      }
+    }
+
+    .step-section {
+      display: none;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .step-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 30px;
+      text-align: left;
+    }
+
+
+    /* =============================== */
+    /* : All Label button input and text areas   */
+    /* =============================== */
+    label {
+      display: block;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .required {
+      color: #ef4444;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background: white;
+    }
+
+    /* ✅ Remove focus color from input, select, textarea */
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      box-shadow: none;
+      border-color: #e5e7eb;
+      /* Keeps default border color */
+    }
+
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    /* Buttons */
+    .button-group {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 15px 30px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 140px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #318be0, #318be0);
+      color: white;
+    }
+
+
+
+    .btn-secondary {
+      background: #f1f5f9;
+      color: #475569;
+      border: 2px solid #e2e8f0;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .button-group {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+
+
+
+    /* =============================== */
+    /* STEP 1: PERSONAL INFORMATION    */
+    /* =============================== */
+    #step1 .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 30px;
+      text-align: left;
+    }
+
+    #step1 .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+
+    #step1 .form-group {
+      position: relative;
+    }
+
+    #step1 .form-group.full-width {
+      grid-column: 1/-1;
+    }
+
+    @media (max-width: 768px) {
+      #step1 .form-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      #step1 .section-title {
+        font-size: 1.5rem;
+      }
+    }
+
+    /* =============================== */
+    /* STEP 2: DELIVERY ADDRESS        */
+    /* =============================== */
+    #step2 .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+
+    #step2 .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    @media (max-width: 768px) {
+      #step2 .form-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+    }
+
+    /* =============================== */
+    /* STEP 3: ORDER SUMMARY           */
+    /* =============================== */
+
+    .order-summary {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 30px;
+    }
+
+    .order-details {
+      background: #f0fdf4;
+      border-radius: 12px;
+      padding: 25px;
+      margin: 30px 0;
+      text-align: left;
+    }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .summary-item:last-child {
+      border-bottom: none;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #88c400;
+    }
+
+    #step3 .order-summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    #step3 .order-summary-table th {
+      text-align: left;
+      padding: 12px;
+      background-color: #f9f9f9;
+      color: #444;
+      font-weight: 600;
+      /* border-bottom: 1px solid #ddd; */
+
+    }
+
+    #step3 .order-summary-table td {
+      padding: 12px;
+      /* border-bottom: 1px solid #eee; */
+      vertical-align: middle;
+    }
+
+    .product-cell {
+      display: flex;
+      align-items: center;
+    }
+
+    .product-info {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .product-info img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    .product-details {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-name {
+      font-weight: 600;
+      color: purple;
+      text-decoration: none;
+      margin-bottom: 4px;
+    }
+
+    .product-meta {
+      font-size: 14px;
+      color: #555;
+    }
+
+    .quantity-controls {
+      width: 150px;
+      display: flex;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      overflow: hidden;
+      justify-content: space-between;
+    }
+
+    .qty-btn,
+    .qty-input {
+      width: 50px;
+      height: 40px;
+      font-size: 18px;
+      text-align: center;
+      border: none;
+      outline: none;
+      background-color: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .qty-input {
+      background-color: #fff;
+      pointer-events: none;
+    }
+
+    .remove-btn {
+      align-items: center;
+      background: none;
+      border: none;
+      color: #888;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .remove-btn:hover {
+      color: red;
+    }
+
+
+
+    @media (min-width: 468px) and (max-width: 768px) {
+      #step3 .order-summary-table thead {
+        display: none;
+      }
+
+      #step3 .order-summary-table,
+      #step3 .order-summary-table tbody {
+        display: flex;
+        flex-direction: column;
+        /* gap: 10px; */
+      }
+
+      #step3 .order-summary-table tr {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        /* gap: 10px; */
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        /* padding: 10px; */
+        background: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      #step3 .order-summary-table td {
+        flex: 1;
+        font-size: 12px;
+        /* padding: 5px; */
+        display: flex;
+        flex-direction: column;
+        justify-content: left;
+      }
+
+      .product-cell {
+        flex: 2;
+        display: flex;
+        align-items: center;
+        /* gap: 2px; */
+      }
+
+      .product-info img {
+        width: 50px;
+        height: 60px;
+        object-fit: fill;
+        border-radius: 4px;
+      }
+
+      .quantity-controls {
+        width: 90px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+      }
+
+      .qty-input {
+        width: 20px !important;
+        /* Reduced width */
+        padding: 1px;
+        text-align: center;
+      }
+
+
+      .remove-btn {
+        align-self: left;
+      }
+    }
+
+
+    /* =============================== */
+    /* STEP 4: PAYMENT OPTIONS         */
+    /* =============================== */
+
+    /* Success Page */
+    .success-container {
+      text-align: center;
+      padding: 60px 40px;
+    }
+
+    .success-icon {
+      font-size: 5rem;
+      margin-bottom: 30px;
+      animation: bounce 1s ease-in-out;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      20%,
+      50%,
+      80%,
+      100% {
+        transform: translateY(0);
+      }
+
+      40% {
+        transform: translateY(-20px);
+      }
+
+      60% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .success-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #10b981;
+      margin-bottom: 15px;
+    }
+
+    .success-message {
+      font-size: 1.2rem;
+      color: #6b7280;
+      margin-bottom: 30px;
+    }
+
+    #step4 .payment-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    #step4 .payment-option {
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    #step4 .payment-option:hover {
+      border-color: #88c400;
+      background: #f0f9ff;
+    }
+
+    #step4 .payment-option.selected {
+      border-color: #88c400;
+      background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+    }
+
+    .payment-icon {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 768px) {
+      #step4 .payment-options {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  {% include 'header.html' %}
+  <div class="container">
+    <!-- Progress Bar Start  -->
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-line">
+          <div class="progress-line-active" id="progressLineActive" style="width: 25%;"></div>
+        </div>
+
+        <div class="step-item active" data-step="1">
+          <div class="step-circle">👤</div>
+          <div class="step-label">Personal<br>Details</div>
+        </div>
+
+        <div class="step-item" data-step="2">
+          <div class="step-circle">📍</div>
+          <div class="step-label">Delivery<br>Address</div>
+        </div>
+
+        <div class="step-item" data-step="3">
+          <div class="step-circle">📦</div>
+          <div class="step-label">Order<br>Summary</div>
+        </div>
+
+        <div class="step-item" data-step="4">
+          <div class="step-circle">💳</div>
+          <div class="step-label">Payment<br>& Confirm</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-container">
+      <form id="checkoutForm">
+
+        <!-- Step 1: Personal Details -->
+        <div class="step-section active" id="step1">
+          <h2 class="section-title">Personal Information</h2>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label>First Name <span class="required">*</span></label>
+              {% if user.is_authenticated %}
+              <input type="text" name="firstName" value="{{ user.first_name }}" required>
+              {% else %}
+              <input type="text" name="firstName" required>
+              {% endif %}
+            </div>
+
+            <div class="form-group">
+              <label>Last Name <span class="required">*</span></label>
+              {% if user.is_authenticated %}
+              <input type="text" name="lastName" value="{{ user.last_name }}" required>
+              {% else %}
+              <input type="text" name="lastName" required>
+              {% endif %}
+            </div>
+
+            <div class="form-group">
+              <label>Email Address <span class="required">*</span></label>
+              {% if user.is_authenticated %}
+              <input type="email" name="email" value="{{ user.email }}" required>
+              {% else %}
+              <input type="email" name="email" required>
+              {% endif %}
+            </div>
+
+            <div class="form-group">
+              <label>Phone Number <span class="required">*</span></label>
+              <input type="tel" name="phone" required>
+            </div>
+          </div>
+
+          <div class="button-group">
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Continue to Delivery</button>
+          </div>
+        </div>
+
+        <!-- Step 2: Delivery Address -->
+        <div class="step-section" id="step2">
+          <h2 class="section-title">Delivery Address</h2>
+
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label>Street Address <span class="required">*</span></label>
+              <input type="text" name="streetAddress" required>
+            </div>
+
+            <div class="form-group">
+              <label>City <span class="required">*</span></label>
+              <input type="text" name="city" required>
+            </div>
+
+            <div class="form-group">
+              <label>State <span class="required">*</span></label>
+              <select name="state" required>
+                <option value="">Select State</option>
+                <option value="andhra-pradesh">Andhra Pradesh</option>
+                <option value="maharashtra">Maharashtra</option>
+                <option value="karnataka">Karnataka</option>
+                <option value="tamil-nadu">Tamil Nadu</option>
+                <option value="gujarat">Gujarat</option>
+                <option value="rajasthan">Rajasthan</option>
+                <option value="uttar-pradesh">Uttar Pradesh</option>
+                <option value="west-bengal">West Bengal</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>PIN Code <span class="required">*</span></label>
+              <input type="text" name="pinCode" pattern="[0-9]{6}" required>
+            </div>
+
+            <div class="form-group">
+              <label>Landmark</label>
+              <input type="text" name="landmark">
+            </div>
+
+          </div>
+
+          <div class="button-group">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">Back</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Review Order</button>
+          </div>
+
+        </div>
+
+        <!-- Step 3: Order Summary -->
+        <div class="step-section" id="step3">
+          <h2 class="section-title">Order Summary</h2>
+          {% if error %}
+          <p style="color: red;">{{ error }}</p>
+          {% else %}
+          <div class="summary-item">
+            <table class="order-summary-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Price</th>
+                  <th style="text-align: left;">Quantity</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+
+              <tbody id="cart-body">
+                <tr>
+                  <td class="product-cell">
+                    <div class="product-info">
+                      <img src="{{ item.image_url }}" alt="Product Name">
+                      <div class="product-details">
+                        <a href="#" class="product-name">{{ item.product_name }}</a>
+                        <div class="product-meta" style="font-size: 12px;">
+                          Color: {{ item.color }}<br>
+                          Size: {{ item.size }}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+
+                  <td>{{ item.price }}</td>
+                  <td>
+                    <div class="quantity-controls">
+                      <button class="qty-btn" onclick="decreaseQty()">−</button>
+                      <input type="text" class="qty-input" value="{{ item.quantity }}" readonly
+                        data-stock="{{ item.stock }}">
+                      <button class="qty-btn" onclick="increaseQty()">+</button>
+                    </div>
+                  </td>
+
+                  <td>{{ item.total }}</td>
+
+                  <td>
+                    <button class="remove-btn">
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+                  </td>
+
+                </tr>
+                <!-- End repeat -->
+              </tbody>
+            </table>
+          </div>
+          <div class="summary-item"><span>Subtotal</span><span>₹{{ subtotal }}</span></div>
+          <div class="summary-item"><strong>Total</strong><strong>₹{{ total_amount }}</strong></div>
+          {% endif %}
+
+          <div class="button-group">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">Back</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Proceed to Payment</button>
+          </div>
+        </div>
+
+        <!-- Step 4: Payment -->
+        <div class="step-section" id="step4">
+          <h2 class="section-title">Payment & Confirmation</h2>
+
+          <div class="payment-options">
+            <div class="payment-option" onclick="selectPayment('cod')">
+              <div class="payment-icon">💵</div>
+              <h3>Cash on Delivery</h3>
+              <p>Pay when you receive</p>
+            </div>
+
+            <div class="payment-option" onclick="selectPayment('upi')">
+              <div class="payment-icon">📱</div>
+              <h3>UPI Payment</h3>
+              <p>PhonePe, GooglePay, Paytm</p>
+            </div>
+
+            <div class="payment-option" onclick="selectPayment('card')">
+              <div class="payment-icon">💳</div>
+              <h3>Credit/Debit Card</h3>
+              <p>Visa, Mastercard, RuPay</p>
+            </div>
+
+            <div class="payment-option" onclick="selectPayment('netbanking')">
+              <div class="payment-icon">🏦</div>
+              <h3>Net Banking</h3>
+              <p>All major banks</p>
+            </div>
+          </div>
+
+          <div class="form-group full-width">
+            <div class="checkbox-group">
+              <input type="checkbox" id="terms" name="terms" required>
+              <label for="terms">I agree to the <a href="#" style="color: #88c400;">Terms & Conditions</a> and <a
+                  href="#" style="color: #88c400;">Privacy Policy</a></label>
+            </div>
+          </div>
+
+          <div class="button-group">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">Back</button>
+            <button type="button" class="btn btn-primary" onclick="placeOrder()">{{ total_amount }}</button>
+          </div>
+        </div>
+
+        <!-- Step 5: Success -->
+        <div class="step-section" id="step5">
+          <div class="success-container">
+            <div class="success-icon">🎉</div>
+            <h2 class="success-title">Order Placed Successfully!</h2>
+            <p class="success-message">Thank you for choosing DevaSports. Your order has been confirmed.</p>
+
+            <div class="order-details">
+              <h3 style="margin-bottom: 15px; color: #10b981;">Order Details</h3>
+              <p><strong>Order ID:</strong> DS-2025-001234</p>
+              <p><strong>Total Amount:</strong> ₹7,530</p>
+              <p><strong>Expected Delivery:</strong> 3-5 business days</p>
+              <p><strong>Payment Method:</strong> <span id="selectedPaymentMethod">Cash on Delivery</span></p>
+            </div>
+
+            <div class="button-group">
+              <button type="button" class="btn btn-primary" onclick="window.location.href='/'">Continue
+                Shopping</button>
+              <button type="button" class="btn btn-secondary" onclick="trackOrder()">Track Order</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    {% include 'footer.html' %}
+  </footer>
+
+
+  <script>
+    let currentStep = 1;
+    let completedSteps = 1;
+    let selectedPayment = null;
+
+    function updateProgress() {
+      const progressLine = document.getElementById('progressLineActive');
+      const progressPercentage = ((completedSteps - 1) / 3) * 100;
+      progressLine.style.width = progressPercentage + '%';
+
+      document.querySelectorAll('.step-item').forEach((item, index) => {
+        const stepNum = index + 1;
+        item.classList.remove('active', 'completed');
+        if (stepNum < currentStep) item.classList.add('completed');
+        if (stepNum === currentStep) item.classList.add('active');
+        if (currentStep === 1 && stepNum === 1) item.classList.remove('completed');
+      });
+    }
+
+    function showStep(stepNum) {
+      if (stepNum > completedSteps) return;
+      document.querySelectorAll('.step-section').forEach(section =>
+        section.classList.remove('active')
+      );
+      document.getElementById('step' + stepNum).classList.add('active');
+      currentStep = stepNum;
+      updateProgress();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nextStep() {
+      if (validateCurrentStep()) {
+        completedSteps = Math.max(completedSteps, currentStep + 1);
+        if (currentStep < 5) showStep(currentStep + 1);
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 1) showStep(currentStep - 1);
+    }
+
+    function validateCurrentStep() {
+      const currentSection = document.getElementById('step' + currentStep);
+      const requiredFields = currentSection.querySelectorAll('[required]');
+
+      for (let field of requiredFields) {
+        const invalid =
+          (field.type === 'checkbox' && !field.checked) ||
+          (field.type !== 'checkbox' && !field.value.trim());
+
+        if (invalid) {
+          field.focus();
+          field.style.borderColor = '#ef4444';
+          setTimeout(() => (field.style.borderColor = '#e5e7eb'), 3000);
+          return false;
+        }
+      }
+
+      if (currentStep === 4 && !selectedPayment) {
+        alert('Please select a payment method');
+        return false;
+      }
+
+      return true;
+    }
+
+    function selectPayment(method) {
+      selectedPayment = method;
+      document.querySelectorAll('.payment-option').forEach(option =>
+        option.classList.remove('selected')
+      );
+      event.currentTarget.classList.add('selected');
+    }
+
+    function placeOrder() {
+      if (validateCurrentStep()) {
+        const paymentText = {
+          cod: 'Cash on Delivery',
+          upi: 'UPI Payment',
+          card: 'Credit/Debit Card',
+          netbanking: 'Net Banking',
+        };
+        document.getElementById('selectedPaymentMethod').textContent =
+          paymentText[selectedPayment] || '—';
+        showStep(5);
+      }
+    }
+
+    function trackOrder() {
+      alert('Order tracking coming soon!');
+    }
+
+    document.querySelectorAll('input, select, textarea').forEach(field => {
+      field.addEventListener('focus', () => (field.style.borderColor = '#88c400'));
+      field.addEventListener('blur', () => {
+        field.style.borderColor =
+          field.hasAttribute('required') && !field.value.trim()
+            ? '#ef4444'
+            : '#e5e7eb';
+      });
+    });
+
+    updateProgress();
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll('.quantity-controls').forEach((control) => {
+        const increaseBtn = control.querySelector('.qty-btn:last-child');
+        const decreaseBtn = control.querySelector('.qty-btn:first-child');
+        const qtyInput = control.querySelector('.qty-input');
+        const row = control.closest('tr');
+        const price = parseFloat(row.querySelector('td:nth-child(2)').innerText.replace(/[^\d.]/g, ''));
+        const totalCell = row.querySelector('td:nth-child(4)');
+        const stock = parseInt(qtyInput.dataset.stock) || 0;
+
+        increaseBtn.addEventListener('click', () => {
+          let qty = parseInt(qtyInput.value);
+          if (qty < stock) {
+            qty++;
+            qtyInput.value = qty;
+            totalCell.innerText = '₹' + (qty * price).toFixed(2);
+            updateSummaryTotal();
+          } else {
+            alert(`You can only purchase up to ${stock} units of this product.`);
+          }
+        });
+
+        decreaseBtn.addEventListener('click', () => {
+          let qty = parseInt(qtyInput.value);
+          if (qty > 1) {
+            qty--;
+            qtyInput.value = qty;
+            totalCell.innerText = '₹' + (qty * price).toFixed(2);
+            updateSummaryTotal();
+          } else {
+            alert("Quantity cannot be less than 1.");
+          }
+        });
+      });
+
+      function updateSummaryTotal() {
+        let subtotal = 0;
+        document.querySelectorAll('#cart-body tr').forEach(row => {
+          const total = parseFloat(row.querySelector('td:nth-child(4)').innerText.replace(/[^\d.]/g, ''));
+          subtotal += total;
+        });
+
+        document.querySelector('.summary-item:nth-of-type(2) span:last-child').innerText = '₹' + subtotal.toFixed(2);
+        document.querySelector('.summary-item:nth-of-type(3) strong:last-child').innerText = '₹' + subtotal.toFixed(2);
+      }
+    });
+  </script>
+
+  <script>
+    document.querySelector(".buy-now").addEventListener("click", function () {
+      const variantId = "{{ variant.id }}";
+      const sizeId = document.getElementById("size-select").value;
+      const quantity = document.getElementById("qty").innerText.trim();
+
+      if (!sizeId || quantity === "0") {
+        alert("Please select a valid size and quantity.");
+        return;
+      }
+
+      const url = `/buy_process?variant_id=${variantId}&size_id=${sizeId}&quantity=${quantity}`;
+      window.location.href = url;
+    });
+  </script>
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,561 @@
+/* ======================================================= 
+   🔷 COAUSER SLIDER MAIN WRAPPER
+========================================================= */
+
+/* 🖼️ Coauser Main Container */
+.coauser {
+  position: relative;
+  width: 100%;
+  height: 450px;
+  overflow: hidden;
+  background: #000;
+}
+
+/* 🎞️ Slide Track - Container for all slides */
+.slides {
+  display: flex;
+  height: 100%;
+  transition: transform 0.6s ease-in-out;
+}
+
+/* 🖼️ Individual Slide */
+.slide {
+  flex: 0 0 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* 🖼️ Slide Image Styling */
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
+/* 🔄 Navigation Button Styling (Next/Prev) */
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(255, 255, 255, 0.7);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* ◀️ Previous Button Position */
+.prev {
+  left: 10px;
+}
+
+/* ▶️ Next Button Position */
+.next {
+  right: 10px;
+}
+
+/* ⚪ Dots Container for Slide Indicators */
+.indicators {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 11;
+}
+
+/* ⚪ Single Dot Style */
+.dot {
+  width: 12px;
+  height: 12px;
+  background-color: #fff;
+  border-radius: 50%;
+  opacity: 0.5;
+  cursor: pointer;
+  transition: opacity 0.3s, background-color 0.3s;
+}
+
+/* 🔵 Active Dot Style */
+.dot.active {
+  background-color: #007bff;
+  opacity: 1;
+}
+
+/* 📱 Responsive Adjustment for Smaller Screens */
+@media (max-width: 768px) {
+  .coauser {
+    height: 300px;
+  }
+}
+
+/* =======================================================
+   🔶 SERVICE SECTION STYLES
+========================================================= */
+
+/* 🧱 Main services section background and padding */
+.services-section {
+  background-color: #fff;
+  padding: 40px 20px;
+}
+
+/* 🧩 Flex layout for service cards */
+.services-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  max-width: auto;
+  margin: 0 auto;
+}
+
+/* 📦 Individual service card style */
+.service-box {
+  flex: 1 1 220px;
+  max-width: 350px;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  padding: 15px 20px;
+  border-radius: 12px;
+  /* Optional shadow for hover effect */
+  /* box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); */
+  transition: transform 0.3s ease;
+}
+
+/* 📦 Card hover animation */
+.service-box:hover {
+  transform: translateY(-5px);
+}
+
+/* 🖼️ Icon container */
+.service-box .icon {
+  background-color: #ff6e61;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: grid;
+  place-items: center;
+  margin-right: 15px;
+}
+
+/* 🔧 Icon image inside circle */
+.service-box .icon img {
+  width: 28px;
+  height: auto;
+  filter: brightness(0) invert(1);
+}
+
+/* 📝 Heading text in service box */
+.service-box .text h4 {
+  margin: 0;
+  font-size: 18px;
+  color: #111;
+  font-weight: 700;
+}
+
+/* 📃 Paragraph inside service box */
+.service-box .text p {
+  margin: 4px 0 0;
+  color: #444;
+  font-size: 14px;
+}
+
+/* 🧡 Highlight span inside paragraph */
+.service-box .text p span {
+  color: #ff6e61;
+  font-weight: 600;
+}
+
+/* 📱 Responsive layout for smaller screens */
+@media (max-width: 768px) {
+  .service-box {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .service-box .icon {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+}
+
+/* =======================================================
+   🔵 CIRCLE ICON SLIDER BAISED ON CATEGORY SECTION STYLES
+========================================================= */
+/* 📦 Slider wrapper: horizontally scrollable container */
+.slider-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 20px 10px;
+  gap: 25px;
+  background-color: #fff;
+
+  /* Hide scrollbar in Firefox */
+  scrollbar-width: none;
+
+  /* Hide scrollbar in IE/Edge */
+  -ms-overflow-style: none;
+}
+
+/* 🚫 Hide scrollbar in WebKit browsers (Chrome, Safari) */
+.slider-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* 🔘 Each individual circular slider item */
+.slider-item {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  width: 140px;
+  /* Adjusted width for spacing */
+}
+
+/* 🖼️ Circular image styles */
+.slider-item img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  /* Makes it round */
+  border: 2px solid #ccc;
+  /* Optional border */
+  transition: transform 0.2s;
+}
+
+/* 🔍 Slight zoom on image hover */
+.slider-item img:hover {
+  transform: scale(1.05);
+}
+
+/* ✍️ Text label under each circle icon */
+.slider-item span {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* 📱 Mobile/tablet layout alignment fix */
+@media (max-width: 1280px) {
+  .slider-container {
+    justify-content: left;
+  }
+}
+
+/* =======================================================
+   🛍️ PRODUCT LISTING & CARD GRID STYLES
+========================================================= */
+/* 🧱 Product grid container */
+.product-list {
+  margin-left: 25px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  justify-content: start;
+  list-style: none;
+  padding: 0;
+}
+.product-card {
+  border-radius: 0px;
+  border: 1px solid #ddd;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.product-card img {
+  padding: 5px;
+}
+
+
+/* 🖼️ Product image area */
+.card-banner {
+  position: relative;
+  background: #f5f5f5;
+  width: 100%;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* 📷 Image inside card */
+.image-contain {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.3s ease;
+}
+
+/* 🔍 Image zoom on hover */
+.product-card:hover .image-contain {
+  transform: scale(1.1);
+}
+
+/* 🧩 Action buttons container (wishlist, quick view) */
+.card-action-list {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* 📦 Show action buttons on hover */
+.product-card:hover .card-action-list {
+  opacity: 1;
+}
+
+/* 📌 Action button wrapper */
+.card-action-item {
+  position: relative;
+}
+
+/* 💡 Action button style */
+.card-action-btn {
+  background: #fff;
+  border-radius: 50%;
+  padding: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 📎 Ion-icon stroke style (if used) */
+.card-action-btn ion-icon {
+  --ionicon-stroke-width: 30px;
+}
+
+/* 🎯 Hover/focus effect on action buttons */
+.card-action-btn:is(:hover, :focus) {
+  background: var(--bittersweet);
+  color: var(--white);
+}
+
+/* 🗨️ Tooltip below action button */
+.card-action-tooltip {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  transform: translateY(-50%);
+  width: max-content;
+  background: rgba(0, 0, 0, 0.9);
+  color: #fff;
+  font-family: var(--ff-roboto, Arial, sans-serif);
+  font-size: var(--fs-7, 12px);
+  padding: 4px 8px;
+  border-radius: 4px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+/* 🔼 Show tooltip on hover/focus */
+.card-action-item:hover .card-action-tooltip,
+.card-action-btn:focus + .card-action-tooltip {
+  opacity: 1;
+}
+
+/* 🪟 Quick View Modal overlay */
+#quickViewModal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+}
+
+/* 📦 Modal content box */
+.modal-content {
+  background: #fff;
+  padding: 10px;
+  max-width: 350px;
+  width: 90%;
+  border-radius: 8px;
+  text-align: center;
+  position: relative;
+  animation: fadeIn 0.3s ease;
+}
+
+/* 🖼️ Image inside modal */
+.modal-content img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+/* ❌ Modal close button */
+.close-btn {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* ✨ Fade-in animation for modal */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 📱 Modal responsiveness on small screens */
+@media (max-width: 480px) {
+  .modal-content {
+    max-width: 280px;
+    padding: 8px;
+  }
+
+  .close-btn {
+    font-size: 18px;
+  }
+}
+
+/* 🔴 Discount/offer badge */
+.card-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: red;
+  color: #fff;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+}
+
+/* 📝 Card content section (title, price, category) */
+.card-content {
+  text-align: center;
+  padding: 8px 5px;
+}
+
+/* 📂 Product category */
+.card-cat {
+  font-size: 11px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+/* 🔗 Category links */
+.card-cat a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 🏷️ Product title */
+.card-title a {
+  font-size: 15px;
+  color: #222;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+/* 🎨 Title hover color */
+.card-title a:is(:hover, :focus) {
+  color: #e63946;
+}
+
+/* 💰 Product price */
+.card-price {
+  color: #e63946;
+  font-weight: 600;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+/* 🧩 Section title for product blocks */
+.section-title {
+  margin-top: 50px;
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 22px;
+}
+
+/* 🗂️ Category filter button container */
+.filter-list {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 0 auto 25px auto;
+  list-style: none;
+  padding: 0;
+  margin-bottom: 30px;
+}
+
+/* 🔘 Filter button base style */
+.filter-btn {
+  padding: 6px 14px;
+  border: 1px solid #ccc;
+  border-radius: 30px;
+  background: none;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+  font-size: 14px;
+}
+
+/* 🔴 Active filter button */
+.filter-btn.active {
+  background: #e63946;
+  color: #fff;
+  border-color: #e63946;
+}
+
+/* 💻 Desktop (large) — 5 columns */
+@media (min-width: 1200px) {
+  .product-list {
+    grid-template-columns: repeat(5, 250px);
+    gap: 50px;
+  }
+}
+
+/* 🧑‍💻 Tablet (medium) — 3 columns */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .product-list {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+}
+
+/* 📱 Mobile (small) — 1-2 columns */
+@media (max-width: 767px) {
+  .product-list {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 15px;
+  }
+}

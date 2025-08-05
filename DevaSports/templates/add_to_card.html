@@ -1,0 +1,207 @@
+{% load static %}
+{% load custom_filters %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Cart</title>
+
+    <link rel="stylesheet" href="{% static 'css/add_to_card.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    {% include "header.html" %}
+
+    <div class="cart-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody id="cart-body">
+                {% for item in cart_items %}
+                {% with variant=item.product_variant %}
+                {% for size_entry in variant.sizes.all %}
+                {% if size_entry.size.size_label == item.size.size_label %}
+                {% with size_entry.price as unit_price %}
+                <tr data-item-id="{{ item.id }}" data-price="{{ unit_price }}">
+                    <td>
+                        <div class="product-info">
+                            <img src="{{ variant.images.image1.url|default:'/static/images/default.png' }}"
+                                alt="{{ variant.product.name }}">
+                            <div>
+                                <div class="product-name">
+                                    <a href="{% url 'product_details' variant.id %}" style="text-decoration:none;">
+                                        {{ variant.product.name }}
+                                    </a>
+                                </div>
+                                <div class="product-size">
+                                    Color: {{ item.product_variant.color.name|default:"N/A" }} <br>
+                                    Size: {{ item.size.size_label|default:"Free Size" }}
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="unit-price">Rs. {{ unit_price }}</span>
+                        <input type="hidden" class="price-per-unit" value="{{ unit_price }}">
+                    </td>
+                    <td>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" data-change="-1">-</button>
+                            <input type="text" class="qty-input" value="{{ item.quantity }}" readonly>
+                            <button class="qty-btn" data-change="1">+</button>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="item-total">Rs. {{ item.quantity|multiply:unit_price }}</span>
+                    </td>
+                    <td>
+                        <button class="remove-btn">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+                {% endwith %}
+
+                {% endif %}
+                {% endfor %}
+                {% endwith %}
+                {% empty %}
+                <tr id="cart-empty">
+                    <td colspan="5">Your cart is empty.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="subtotal-section">
+            <div class="subtotal-box">
+                <div class="label">Subtotal</div>
+                <div class="total" id="subtotal-amount"></div>
+                <div class="label">Tax included and shipping calculated at checkout</div>
+                <button class="checkout-btn">Check out</button>
+            </div>
+        </div>
+    </div>
+
+    {% include "footer.html" %}
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const csrftoken = getCookie("csrftoken");
+
+            // Quantity update handler
+            document.querySelectorAll(".qty-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    const row = button.closest("tr");
+                    const itemId = row.dataset.itemId;
+                    const change = parseInt(button.dataset.change);
+                    const qtyInput = row.querySelector(".qty-input");
+                    const currentQty = parseInt(qtyInput.value);
+
+                    if (currentQty <= 1 && change < 0) return;
+
+                    const formData = new FormData();
+                    formData.append("action", "update_qty");
+                    formData.append("item_id", itemId);
+                    formData.append("change", change);
+
+                    fetch("{% url 'add_to_card' %}", {
+                        method: "POST",
+                        headers: { "X-CSRFToken": csrftoken },
+                        body: formData
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                qtyInput.value = data.quantity;
+                                const price = parseFloat(row.dataset.price);
+                                row.querySelector(".item-total").textContent = `Rs. ${(data.quantity * price).toFixed(2)}`;
+                                updateSubtotal();
+                            } else {
+                                alert(data.error || "Update failed.");
+                            }
+                        })
+                        .catch(() => alert("Something went wrong."));
+                });
+            });
+
+            // Remove item handler
+            document.querySelectorAll(".remove-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    const row = button.closest("tr");
+                    const itemId = row.dataset.itemId;
+
+                    const formData = new FormData();
+                    formData.append("action", "remove");
+                    formData.append("item_id", itemId);
+
+                    fetch("{% url 'add_to_card' %}", {
+                        method: "POST",
+                        headers: { "X-CSRFToken": csrftoken },
+                        body: formData
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                row.remove();
+                                updateSubtotal();
+                                checkCartEmpty();
+                            } else {
+                                alert(data.error || "Failed to remove item.");
+                            }
+                        })
+                        .catch(() => alert("Request failed."));
+                });
+            });
+
+            function updateSubtotal() {
+                let subtotal = 0;
+                document.querySelectorAll("tr[data-item-id]").forEach(row => {
+                    const qty = parseInt(row.querySelector(".qty-input").value);
+                    const price = parseFloat(row.dataset.price);
+                    subtotal += qty * price;
+                });
+                document.getElementById("subtotal-amount").textContent = `Rs. ${subtotal.toFixed(2)}`;
+            }
+
+            function checkCartEmpty() {
+                const hasItems = document.querySelectorAll("tr[data-item-id]").length > 0;
+                const emptyRow = document.getElementById("cart-empty");
+                if (emptyRow) {
+                    emptyRow.style.display = hasItems ? "none" : "table-row";
+                }
+            }
+
+            function getCookie(name) {
+                const cookies = document.cookie.split(';');
+                for (let cookie of cookies) {
+                    const trimmed = cookie.trim();
+                    if (trimmed.startsWith(name + '=')) {
+                        return decodeURIComponent(trimmed.substring(name.length + 1));
+                    }
+                }
+                return null;
+            }
+
+            updateSubtotal();
+            checkCartEmpty();
+        });
+    </script>
+</body>
+
+</html>

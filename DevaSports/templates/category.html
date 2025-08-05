@@ -1,0 +1,531 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+    <style>
+        /* =======================================================
+   🛍️ PRODUCT LISTING & CARD GRID STYLES
+========================================================= */
+        /* 🧱 Product grid container */
+        .product-list {
+            margin-left: 25px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            justify-content: start;
+            list-style: none;
+            padding: 0;
+        }
+
+        .product-card {
+            border-radius: 0px;
+            border: 1px solid #ddd;
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-card img {
+            padding: 5px;
+        }
+
+        /* 🖼️ Product image area */
+        .card-banner {
+            position: relative;
+            background: #f5f5f5;
+            width: 100%;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* 📷 Image inside card */
+        .image-contain {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.3s ease;
+        }
+
+        /* 🔍 Image zoom on hover */
+        .product-card:hover .image-contain {
+            transform: scale(1.1);
+        }
+
+        /* 🧩 Action buttons container (wishlist, quick view) */
+        .card-action-list {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* 📦 Show action buttons on hover */
+        .product-card:hover .card-action-list {
+            opacity: 1;
+        }
+
+        /* 📌 Action button wrapper */
+        .card-action-item {
+            position: relative;
+        }
+
+        /* 💡 Action button style */
+        .card-action-btn {
+            background: #fff;
+            border-radius: 50%;
+            padding: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 📎 Ion-icon stroke style (if used) */
+        .card-action-btn ion-icon {
+            --ionicon-stroke-width: 30px;
+        }
+
+        /* 🎯 Hover/focus effect on action buttons */
+        .card-action-btn:is(:hover, :focus) {
+            background: var(--bittersweet);
+            color: var(--white);
+        }
+
+        /* 🗨️ Tooltip below action button */
+        .card-action-tooltip {
+            position: absolute;
+            top: 40px;
+            right: 0;
+            transform: translateY(-50%);
+            width: max-content;
+            background: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            font-family: var(--ff-roboto, Arial, sans-serif);
+            font-size: var(--fs-7, 12px);
+            padding: 4px 8px;
+            border-radius: 4px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            white-space: nowrap;
+            z-index: 10;
+        }
+
+        /* 🔼 Show tooltip on hover/focus */
+        .card-action-item:hover .card-action-tooltip,
+        .card-action-btn:focus+.card-action-tooltip {
+            opacity: 1;
+        }
+
+        /* 🪟 Quick View Modal overlay */
+        #quickViewModal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+
+        /* 📦 Modal content box */
+        .modal-content {
+            background: #fff;
+            padding: 10px;
+            max-width: 350px;
+            width: 90%;
+            border-radius: 8px;
+            text-align: center;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* 🖼️ Image inside modal */
+        .modal-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        /* ❌ Modal close button */
+        .close-btn {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* ✨ Fade-in animation for modal */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* 📱 Modal responsiveness on small screens */
+        @media (max-width: 480px) {
+            .modal-content {
+                max-width: 280px;
+                padding: 8px;
+            }
+
+            .close-btn {
+                font-size: 18px;
+            }
+        }
+
+        /* 🔴 Discount/offer badge */
+        .card-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: red;
+            color: #fff;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+        }
+
+        /* 📝 Card content section (title, price, category) */
+        .card-content {
+            text-align: center;
+            padding: 8px 5px;
+        }
+
+        /* 📂 Product category */
+        .card-cat {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        /* 🔗 Category links */
+        .card-cat a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* 🏷️ Product title */
+        .card-title a {
+            font-size: 15px;
+            color: #222;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        /* 🎨 Title hover color */
+        .card-title a:is(:hover, :focus) {
+            color: #e63946;
+        }
+
+        /* 💰 Product price */
+        .card-price {
+            color: #e63946;
+            font-weight: 600;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        /* 🧩 Section title for product blocks */
+        .section-title {
+            margin-top: 50px;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 22px;
+        }
+
+        /* 🗂️ Category filter button container */
+        .filter-list {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 0 auto 25px auto;
+            list-style: none;
+            padding: 0;
+            margin-bottom: 30px;
+        }
+
+        /* 🔘 Filter button base style */
+        .filter-btn {
+            padding: 6px 14px;
+            border: 1px solid #ccc;
+            border-radius: 30px;
+            background: none;
+            cursor: pointer;
+            transition: background 0.3s ease, color 0.3s ease;
+            font-size: 14px;
+        }
+
+        /* 🔴 Active filter button */
+        .filter-btn.active {
+            background: #e63946;
+            color: #fff;
+            border-color: #e63946;
+        }
+
+        /* 💻 Desktop (large) — 5 columns */
+        @media (min-width: 1200px) {
+            .product-list {
+                grid-template-columns: repeat(5, 250px);
+                gap: 50px;
+            }
+        }
+
+        /* 🧑‍💻 Tablet (medium) — 3 columns */
+        @media (min-width: 768px) and (max-width: 1199px) {
+            .product-list {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+            }
+        }
+
+        /* 📱 Mobile (small) — 1-2 columns */
+        @media (max-width: 767px) {
+            .product-list {
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        {% include 'header.html' %}
+    </header>
+
+
+    <div class="container">
+        <h2 class="section-title">{{ category.name }}</h2>
+
+
+
+
+        <ul class="product-list">
+            {% for item in product_cards %}
+            <li class="product-item">
+                <div class="product-card">
+                    <figure class="card-banner">
+                        <a href="{% url 'product_details' item.id %}">
+                            {% if item.images and item.images.image1 %}
+                            <img src="{{ item.images.image1.url }}" class="image-contain" alt="{{ item.product.name }}">
+                            {% else %}
+                            <img src="/static/images/default.png" class="image-contain" alt="Default Image">
+                            {% endif %}
+                        </a>
+                        {% if item.product.is_arrival %}
+                        <div class="card-badge">New Arrival</div>
+                        {% endif %}
+
+                        <div class="card-action-list">
+                            <!-- ✅ Add to Cart Button (Fixed) -->
+                            <div class="card-action-item">
+                                <button class="card-action-btn add-to-cart" data-id="{{ item.id }}"
+                                    data-title="{{ item.product.name }}" data-quantity="1">
+                                    <ion-icon name="cart-outline"></ion-icon>
+                                </button>
+                                <div class="card-action-tooltip">Add to Cart</div>
+
+                            </div>
+
+                            <!-- ✅ Wishlist Button (Already Correct) -->
+                            <div class="card-action-item">
+                                <button class="card-action-btn add-to-wishlist" data-id="{{ item.variant.id }}"
+                                    data-title="{{ item.product.name }}"
+                                    data-image="{% if item.variant.images and item.variant.images.image1 %}{{ item.variant.images.image1.url }}{% else %}/static/images/default.png{% endif %}"
+                                    data-price="{{ first_size.price }}" data-size="{{ first_size.size }}">
+                                    <ion-icon name="heart-outline"></ion-icon>
+                                </button>
+                                <div class="card-action-tooltip">Wishlist</div>
+                            </div>
+
+
+                            <div class="card-action-item">
+                                <button class="card-action-btn quick-view-btn"
+                                    data-img="{% if item.images and item.images.image1 %}{{ item.images.image1.url }}{% else %}/static/images/default.png{% endif %}">
+                                    <ion-icon name="eye-outline"></ion-icon>
+                                </button>
+                                <div class="card-action-tooltip">Quick View</div>
+                            </div>
+                        </div>
+                    </figure>
+
+                    <div class="card-content">
+                        <div class="card-cat">
+                            <medium>{{ item.product.category.name }}</medium> /
+                            <medium>{{ item.product.brand.name }}</medium> /
+                            <medium>{{ item.color }}</medium> 
+                             {# ✅ Hide first size from display, but keep it usable for backend #}
+                                {% with item.variant.sizes.all|first as first_size %}
+                                <input type="hidden" value="{{ first_size.size }}" class="first-size-hidden" />
+                                {% endwith %}
+                                <br>
+                                <div class="card-sizes">
+                                    <b><span>Sizes:</span></b>
+
+                                    {% for s in item.sizes.all %}
+                                    <span class="size-pill">{{ s.size }},</span>
+                                    {% endfor %}
+
+                                </div>
+                        </div>
+                        <h3 class="card-title">
+                            <a href="{% url 'product_details' item.id %}">
+                                {{ item.product.name }}
+                            </a>
+                        </h3>
+                        {% with item.sizes.all|first as first_size %}
+                        <div class="card-price">₹{{ first_size.price }}</div>
+                        {% endwith %}
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+
+    <!-- Quick View Modal -->
+    <div id="quickViewModal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <img id="modalImage" src="" alt="Product Preview">
+        </div>
+    </div>
+
+
+    <footer>
+        <div id="footer-placeholder">
+            {% include "footer.html" %}
+        </div>
+    </footer>
+
+</body>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+<script>
+    // ✅ Quick View Modal Logic
+    const quickViewBtns = document.querySelectorAll('.quick-view-btn');
+    const modal = document.getElementById('quickViewModal');
+    const modalImage = document.getElementById('modalImage');
+    const closeBtn = document.querySelector('.close-btn');
+
+    quickViewBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const imgSrc = btn.getAttribute('data-img');
+            modalImage.src = imgSrc;
+            modal.style.display = 'flex';
+        });
+    });
+
+    closeBtn?.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', () => {
+            const product = getProductData(button);
+
+            fetch('/save-cart-details/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()
+                },
+                body: JSON.stringify({
+                    id: product.id,
+                    quantity: product.quantity
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message || "Product added to cart.");
+                })
+                .catch(error => {
+                    console.error("Error saving to DB:", error);
+                    alert("Failed to add product to cart.");
+                });
+        });
+    });
+
+    function getProductData(button) {
+        return {
+            id: button.dataset.id,
+            quantity: parseInt(button.dataset.quantity || 1)
+        };
+    }
+
+    function getCSRFToken() {
+        const cookieValue = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrftoken='))
+            ?.split('=')[1];
+        return cookieValue;
+    }
+    // ✅ Wishlist Placeholder (optional, depends on your backend)
+    document.querySelectorAll('.add-to-wishlist').forEach(button => {
+        button.addEventListener('click', () => {
+            const id = button.dataset.id;
+            alert(`Wishlist click: ID = ${id}`);
+            // Send to backend if needed
+        });
+    });
+
+    // ✅ Helper Function: Extract CSRF token from cookies
+    function getCSRFToken() {
+        const name = "csrftoken";
+        const cookies = document.cookie.split(";");
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+            if (cookie.startsWith(name + "=")) {
+                return decodeURIComponent(cookie.substring(name.length + 1));
+            }
+        }
+        return "";
+    }
+
+    // ✅ Helper Function: Extract product ID and quantity
+    function getProductData(button) {
+        return {
+            id: button.dataset.id,
+            quantity: button.dataset.quantity || 1
+        };
+    }
+</script>
+
+</html>

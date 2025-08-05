@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Footer UI Replica</title>
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+    <script src="https://kit.fontawesome.com/a2d9f5f49a.js" crossorigin="anonymous"></script>
+
+
+</head>
+
+<body>
+
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-left">
+                <img src="{% static 'images/deva-logo.jpg' %}" alt="Deva Logo" />
+                <div class="brand-name">Deva-Sports</div>
+            </div>
+
+            <div class="social-icons">
+                <a
+                    href="https://l.instagram.com/?u=https%3A%2F%2Fchat.whatsapp.com%2FJAR7MDKLRLVEKY8WqK1o9X%3Ffbclid%3DPAZXh0bgNhZW0CMTEAAaf4iXHQ6XeE7YFMN2oYapHe9S8AO1gbeSH0xNWWdVbiZ5ENZmCFoezgvboF7Q_aem_dt-MPNF30rdNDpKGI37Zqg&e=AT0I9mfksW0kQNczrQX-gSLmvJzUEUmJRBrK27gf4puw1NfX8FK7tkMMF-nRp_5CRfnIBnHQTvAiSI4nbtYoiJIBfTLMfUYcsLPmgcoCH6bX0VHKcoAG6w"><ion-icon
+                        name="logo-whatsapp"></ion-icon></a>
+                <a href="https://www.instagram.com/deva_sports_09"><ion-icon name="logo-instagram"></ion-icon></a>
+                <a href="#"><ion-icon name="logo-facebook"></ion-icon></a>
+                <a href="#"><ion-icon name="logo-twitter"></ion-icon></a>
+            </div>
+        </div>
+
+        <div class="footer-grid">
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p><ion-icon name="location"></ion-icon> 2751 S Parker Rd, Aurora, CO</p>
+                <p><ion-icon name="call"></ion-icon> +557343673257</p>
+                <p><ion-icon name="mail"></ion-icon> footcap@help.com</p>
+            </div>
+
+            <div class="footer-section">
+                <h3>My Account</h3>
+                <ul>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> My Account</a></li>
+                    <li><a href="{% url 'add_to_card' %}"><i class="fas fa-angle-right"></i> View Cart</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> Wishlist</a></li>
+                    <!-- <li><a href="#"><i class="fas fa-angle-right"></i> Compare</a></li> -->
+                    <li><a href="#"><i class="fas fa-angle-right"></i> New Products</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Opening Time</h3>
+                <ul>
+                    <li><strong>Mon:</strong> 9AM - 8PM</li>
+                    <li><strong>Tue:</strong> 9AM - 8PM</li>
+                    <li><strong>Wed:</strong> 9AM - 8PM</li>
+                    <li><strong>Fri:</strong> 9AM - 8PM</li>
+                    <li><strong>Sat:</strong> 9AM - 8PM</li>
+                    <li><strong>Sun:</strong> Closed</li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <p>Stay up to date with our latest offers.</p>
+                <div class="newsletter">
+                    <input type="email" placeholder="Email Address" />
+                    <button>Subscribe</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2022 <span class="highlight">codewithsadee</span>. All Rights Reserved</p>
+            <div class="scroll-top" id="scrollTopBtn">
+                <ion-icon class="arrow-icon" name="arrow-up-outline"></ion-icon>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const scrollTopBtn = document.getElementById("scrollTopBtn");
+
+            window.addEventListener("scroll", () => {
+                scrollTopBtn.classList.toggle("show", window.scrollY > 200);
+            });
+
+            scrollTopBtn.addEventListener("click", () => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            });
+        });
+    </script>
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>

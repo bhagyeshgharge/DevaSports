@@ -1,0 +1,229 @@
+/* ========== GLOBAL RESET ========== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+}
+
+/* ========== ROOT VARIABLES ========== */
+:root {
+    --primary-color: #ff6e61;
+    --dark-bg: #0c0c0c;
+    --text-color: #333;
+}
+
+/* ========== MAIN FOOTER CONTAINER ========== */
+.footer {
+    color: var(--text-color);
+    padding-top: 40px;
+    position: relative;
+}
+
+/* ========== TOP SECTION: LOGO + SOCIAL ========== */
+.footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 20px;
+}
+
+.footer-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.footer-left img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #333;
+}
+
+.brand-name {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.brand-name span {
+    color: var(--primary-color);
+}
+
+/* ========== SOCIAL ICONS ========== */
+.social-icons a {
+    background: #e0e0e0;
+    padding: 8px 10px;
+    font-size: 18px;
+    border-radius: 5px;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: 0.3s ease;
+    margin-left: 10px;
+}
+
+.social-icons a:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* ========== GRID LAYOUT FOR FOOTER COLUMNS ========== */
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+/* ========== INDIVIDUAL SECTION (LINKS, CONTACT, ETC.) ========== */
+.footer-section h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid var(--primary-color);
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+.footer-section p,
+.footer-section li {
+    font-size: 14px;
+    margin: 10px 0;
+}
+
+.footer-section i {
+    color: var(--primary-color);
+    margin-right: 8px;
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section a {
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+.footer-section a:hover {
+    color: var(--primary-color);
+}
+
+/* ========== NEWSLETTER FORM ========== */
+.newsletter {
+    display: flex;
+    margin-top: 10px;
+}
+
+.newsletter input {
+    padding: 10px;
+    border: none;
+    flex: 1;
+}
+
+.newsletter button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+/* ========== BOTTOM COPYRIGHT ========== */
+.footer-bottom {
+    text-align: center;
+    background-color: var(--dark-bg);
+    color: white;
+    padding: 10px;
+    font-size: 13px;
+    position: relative;
+}
+
+.highlight {
+    color: var(--primary-color);
+}
+
+/* ========== SCROLL TO TOP BUTTON ========== */
+.scroll-top {
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    background-color: var(--primary-color);
+    color: #fff;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
+.scroll-top.show {
+    display: flex;
+}
+
+.arrow-icon {
+    font-size: 22px;
+}
+
+/* ========== RESPONSIVE STYLES ========== */
+@media (max-width: 1024px) {
+    /* Stack top section on tablets */
+    .footer-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .footer-left {
+        margin-bottom: 10px;
+    }
+
+    .social-icons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Newsletter layout becomes vertical on smaller screens */
+    .newsletter {
+        flex-direction: column;
+    }
+
+    .newsletter input,
+    .newsletter button {
+        width: 100%;
+        margin: 5px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Font resizing for very small screens */
+    .brand-name {
+        font-size: 18px;
+    }
+
+    .footer-section h3 {
+        font-size: 18px;
+    }
+
+    .footer-section p,
+    .footer-section li {
+        font-size: 13px;
+    }
+
+    .arrow-icon {
+        font-size: 20px;
+    }
+}
