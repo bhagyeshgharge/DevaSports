@@ -10,6 +10,15 @@
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
     <script src='main.js'></script>
     <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            overflow-x: hidden;
+            /* ✅ prevent unwanted horizontal scroll */
+        }
+
         /* =======================================================
    🛍️ PRODUCT LISTING & CARD GRID STYLES
 ========================================================= */
@@ -383,20 +392,20 @@
                         <div class="card-cat">
                             <medium>{{ item.product.category.name }}</medium> /
                             <medium>{{ item.product.brand.name }}</medium> /
-                            <medium>{{ item.color }}</medium> 
-                             {# ✅ Hide first size from display, but keep it usable for backend #}
-                                {% with item.variant.sizes.all|first as first_size %}
-                                <input type="hidden" value="{{ first_size.size }}" class="first-size-hidden" />
-                                {% endwith %}
-                                <br>
-                                <div class="card-sizes">
-                                    <b><span>Sizes:</span></b>
+                            <medium>{{ item.color }}</medium>
+                            {# ✅ Hide first size from display, but keep it usable for backend #}
+                            {% with item.variant.sizes.all|first as first_size %}
+                            <input type="hidden" value="{{ first_size.size }}" class="first-size-hidden" />
+                            {% endwith %}
+                            <br>
+                            <div class="card-sizes">
+                                <b><span>Sizes:</span></b>
 
-                                    {% for s in item.sizes.all %}
-                                    <span class="size-pill">{{ s.size }},</span>
-                                    {% endfor %}
+                                {% for s in item.sizes.all %}
+                                <span class="size-pill">{{ s.size }},</span>
+                                {% endfor %}
 
-                                </div>
+                            </div>
                         </div>
                         <h3 class="card-title">
                             <a href="{% url 'product_details' item.id %}">

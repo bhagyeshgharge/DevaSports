@@ -7,10 +7,20 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Sport Essentials Logo T-Shirt</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet'
-        href="{% static 'D:\Bhagyesh\python\django-projects\DevaSports\static\css\prodcut_details.css' %}">
-    <script src='main.js'></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel='stylesheet' href="{% static 'css\prodcut_details.css' %}">
+    <!-- <script src='main.js'></script> -->
     <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            overflow-x: hidden;
+            /* ✅ prevent unwanted horizontal scroll */
+        }
+
         /* =======================================================
    🛍️ PRODUCT CARD + SIMILAR SLIDER STYLES (MERGED)
 ========================================================== */
@@ -613,6 +623,7 @@
             {% include "footer.html" %}
         </div>
     </footer>
+    
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const cartBtn = document.querySelector('.cart-btn');

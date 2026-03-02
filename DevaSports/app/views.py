@@ -47,14 +47,22 @@ from django.contrib.auth import authenticate, login as auth_login
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
+
+User = get_user_model()
+
+# -------------------- LOGIN VIEW --------------------
 def login_view(request):
+    """
+    Handles user login.
+    """
     if request.method == "POST":
         email = request.POST.get("email")
         password = request.POST.get("password")
         next_url = request.POST.get("next") or "/"
 
+        # Authenticate user
         user = authenticate(request, email=email, password=password)
-        if user is not None:
+        if user:
             auth_login(request, user)
             return JsonResponse({
                 "status": "success",
@@ -67,27 +75,38 @@ def login_view(request):
                 "message": "Invalid email or password."
             })
 
+    # Render login page with optional 'next' parameter
     context = {"next": request.GET.get("next", "/")}
     return render(request, 'login.html', context)
 
 
-def LogOut(request):
-     logout(request)
-     return redirect('/')
 
-User = get_user_model()
+# -------------------- LOGOUT VIEW --------------------
+def LogOut(request):
+    """
+    Logs out the user and redirects to the homepage.
+    """
+    logout(request)
+    return redirect('/')
+
+# -------------------- FORGOT PASSWORD VIEW --------------------
 def Forgot_password(request):
+    """
+    Handles the forgot password process: sending and verifying OTP.
+    """
     if request.method == "POST":
         action = request.POST.get("action")
         email = request.POST.get("email")
 
         if action == "send_otp":
+            # Check if the email is registered
             if not User.objects.filter(email=email).exists():
                 return JsonResponse({
                     "status": "error",
                     "message": "This email is not registered."
                 })
 
+            # Generate and send OTP
             otp = generate_otp()
             request.session['reset_email'] = email
             request.session['reset_otp'] = otp
@@ -99,29 +118,39 @@ def Forgot_password(request):
             })
 
         elif action == "verify_otp":
+            # Verify the entered OTP
             entered_otp = request.POST.get("otp")
             session_otp = request.session.get("reset_otp")
 
             if entered_otp == session_otp:
-                return redirect('reset_password')  # URL name for your reset password page
+                return redirect('reset_password')  # Redirect to reset password page
 
             return render(request, "forget_password.html", {
                 "error": "Invalid OTP. Please try again."
             })
 
+    # Render forgot password page
     return render(request, "forget_password.html")
 
 
+
+
+# -------------------- RESET PASSWORD VIEW --------------------
 def reset_password(request):
+    """
+    Handles password reset after OTP verification.
+    """
     if request.method == "POST":
-        password = request.POST.get("new_password")  # 🔄 Match form input name
+        password = request.POST.get("new_password")
         confirm_password = request.POST.get("confirm_password")
         email = request.session.get("reset_email")
 
+        # Check if session email exists
         if not email:
             messages.error(request, "Session expired. Please request a new OTP.")
             return redirect("forgot_password")
 
+        # Validate password fields
         if not password or not confirm_password:
             messages.error(request, "Both password fields are required.")
             return render(request, "reset_password.html")
@@ -134,11 +163,13 @@ def reset_password(request):
             messages.error(request, "Password must be at least 6 characters long.")
             return render(request, "reset_password.html")
 
+        # Update user password
         try:
             user = User.objects.get(email=email)
             user.set_password(password)
             user.save()
 
+            # Clear session data
             request.session.pop("reset_email", None)
             request.session.pop("reset_otp", None)
 
@@ -149,22 +180,28 @@ def reset_password(request):
             messages.error(request, "User not found.")
             return redirect("forgot_password")
 
+    # Render reset password page
     return render(request, "reset_password.html")
 
 
+
+# -------------------- SIGNUP VIEW --------------------
 @csrf_exempt
 def signup(request):
+    """
+    Handles user signup with OTP verification.
+    """
     if request.method == "POST":
         action = request.POST.get("action")
 
-        # ---------- Step 1: SEND OTP ----------
         if action == "send_otp":
+            # Send OTP for signup
             email = request.POST.get("email")
 
             if not email:
                 return JsonResponse({"status": "error", "message": "Please enter your email."})
 
-            if CustomUser.objects.filter(email=email).exists():
+            if User.objects.filter(email=email).exists():
                 return JsonResponse({"status": "error", "message": "This email is already registered."})
 
             otp = generate_otp()
@@ -175,6 +212,7 @@ def signup(request):
             return JsonResponse({"status": "success", "message": "OTP has been sent to your email."})
 
         elif action == "signup":
+            # Complete signup process
             full_name = request.POST.get("name", "").strip().title()
             email = request.POST.get("email")
             password = request.POST.get("password")
@@ -189,19 +227,19 @@ def signup(request):
             if session_email != email or session_otp != otp_input:
                 return JsonResponse({"status": "error", "message": "Invalid OTP or email."})
 
-            if CustomUser.objects.filter(email=email).exists():
+            if User.objects.filter(email=email).exists():
                 return JsonResponse({"status": "error", "message": "This email is already registered."})
 
             try:
-                first_name = full_name
-                last_name = ""
-
+                # Split full name into first and last name
+                first_name, last_name = full_name, ""
                 if " " in full_name:
                     parts = full_name.split()
                     first_name = parts[0]
                     last_name = " ".join(parts[1:])
 
-                user = CustomUser.objects.create(
+                # Create user
+                user = User.objects.create(
                     first_name=first_name,
                     last_name=last_name,
                     email=email,
@@ -209,6 +247,8 @@ def signup(request):
                     is_active=True
                 )
                 auth_login(request, user)
+
+                # Clear session data
                 request.session.pop("otp", None)
                 request.session.pop("otp_email", None)
 
@@ -218,16 +258,22 @@ def signup(request):
                     "redirect_url": "/"
                 })
 
-            except Exception as e:
+            except Exception:
                 return JsonResponse({
                     "status": "error",
                     "message": "Something went wrong. Please try again."
                 })
 
+    # Render signup page
     return render(request, 'signup.html')
 
 
+# -------------------- ADD PRODUCT FOR ADMIN --------------------
 def add_product(request):
+    """
+    Handles adding a new product with its variants, sizes, and images.
+    """
+    # Fetch required data for the form
     colors = Color.objects.all()
     categories = Category.objects.all()
     brands = Brand.objects.all()
@@ -236,16 +282,17 @@ def add_product(request):
     if request.method == 'POST':
         try:
             with transaction.atomic():
-                # Collect product data
+                # Collect product data from the form
                 name = request.POST.get('product_name')
                 description = request.POST.get('description')
-                is_active = bool(request.POST.get('activate'))
-                
+                is_active = bool(request.POST.get('activate', False))  # Defaults to False if not checked  # Convert checkbox value to boolean
+
+                # Fetch related objects
                 category = Category.objects.get(name=request.POST.get('category'))
                 brand = Brand.objects.get(name=request.POST.get('brand'))
                 color = Color.objects.get(name=request.POST.get('color'))
 
-                # Create product
+                # Create the product
                 product = Product.objects.create(
                     name=name,
                     brand=brand,
@@ -254,7 +301,7 @@ def add_product(request):
                     is_active=is_active
                 )
 
-                # Create variant
+                # Generate SKU and create product variant
                 sku = f"{product.name[:3].upper()}-{color.name[:3].upper()}-{product.id}"
                 variant = ProductVariant.objects.create(
                     product=product,
@@ -262,21 +309,27 @@ def add_product(request):
                     sku=sku
                 )
 
-                # Sizes, prices, stocks
+                # Process sizes, prices, and stocks
                 size_labels = request.POST.getlist('size[]')
                 prices = request.POST.getlist('price[]')
                 stocks = request.POST.getlist('stock[]')
 
+                # Bulk create ProductVariantSize objects for better performance
+                variant_sizes = []
+                size_objects = {size.size_label: size for size in Size.objects.filter(size_label__in=size_labels)}
                 for s_label, price, stock in zip(size_labels, prices, stocks):
-                    size = Size.objects.get(size_label=s_label)
-                    ProductVariantSize.objects.create(
+                    size = size_objects.get(s_label)
+                    if not size:
+                        raise ValueError(f"Invalid size: {s_label}")
+                    variant_sizes.append(ProductVariantSize(
                         variant=variant,
                         size=size,
                         price=price,
                         stock=stock
-                    )
+                    ))
+                ProductVariantSize.objects.bulk_create(variant_sizes)
 
-                # Images
+                # Save product images
                 ProductVariantImage.objects.create(
                     variant=variant,
                     image1=request.FILES.get('image1'),
@@ -285,12 +338,22 @@ def add_product(request):
                     image4=request.FILES.get('image4')
                 )
 
+                # Success message and redirect
                 messages.success(request, "Product added successfully!")
                 return redirect('home')  # Replace 'home' with your homepage name
 
+        except Category.DoesNotExist:
+            messages.error(request, "Selected category does not exist.")
+        except Brand.DoesNotExist:
+            messages.error(request, "Selected brand does not exist.")
+        except Color.DoesNotExist:
+            messages.error(request, "Selected color does not exist.")
         except Exception as e:
+            # Log the error for debugging (optional)
+            print(f"Error saving product: {e}")
             messages.error(request, f"Error saving product: {str(e)}")
 
+    # Render the add product form
     return render(request, 'add_product.html', {
         'categories': categories,
         'brands': brands,

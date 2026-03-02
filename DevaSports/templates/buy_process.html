@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,17 +12,14 @@
     /* =============================== */
     /*           GLOBAL RESET         */
     /* =============================== */
-    /* * {
-      box-sizing: border-box;
+    body,
+    html {
       margin: 0;
       padding: 0;
+      width: 100%;
+      overflow-x: hidden;
+      /* ✅ prevent unwanted horizontal scroll */
     }
-
-    body {
-      font-family: "Inter", sans-serif;
-      background: #fff;
-      color: #1a202c;
-    } */
 
     .container {
       max-width: auto;
@@ -892,7 +890,9 @@
   </div>
 
   <footer>
-    {% include 'footer.html' %}
+    <div id="footer-placeholder">
+      {% include "footer.html" %}
+    </div>
   </footer>
 
 
