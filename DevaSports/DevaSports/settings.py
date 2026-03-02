@@ -45,7 +45,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # ADD THIS LINE
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Serves static files efficiently in production
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -158,6 +158,9 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),  # Assuming 'static' is in your base project directory
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# Optional but recommended for production:
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
