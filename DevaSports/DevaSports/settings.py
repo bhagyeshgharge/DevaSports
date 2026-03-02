@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "fallback-secret-key")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '10.220.227.254', '.onrender.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.onrender.com']
 
 
 # Application definition
@@ -85,17 +85,23 @@ WSGI_APPLICATION = 'DevaSports.wsgi.application'
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }"""
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'devasports',           # Your database name
+#         'USER': 'root',          # Your MariaDB username
+#         'PASSWORD': 'root',          # Your MariaDB password (empty if none)
+#         'HOST': '127.0.0.1',     # Use 127.0.0.1 for better compatibility
+#         'PORT': '3307',          # MariaDB port
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'devasports',           # Your database name
-        'USER': 'root',          # Your MariaDB username
-        'PASSWORD': 'root',          # Your MariaDB password (empty if none)
-        'HOST': '127.0.0.1',     # Use 127.0.0.1 for better compatibility
-        'PORT': '3307',          # MariaDB port
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'app.CustomUser'
